@@ -1,4 +1,5 @@
 import { type Connection, type NodeId, type SDNode } from './types'
+import defaultWorkflow from './assets/defaultWorkflow.json'
 
 export interface PersistedNode {
   value: SDNode
@@ -14,7 +15,7 @@ const GRAPH_KEY = 'graph'
 
 export function retrieveLocalWorkflow(): PersistedGraph | null {
   const item = localStorage.getItem(GRAPH_KEY)
-  return item !== null && JSON.parse(item)
+  return item === null ? defaultWorkflow : JSON.parse(item)
 }
 
 export function saveLocalWorkflow(graph: PersistedGraph): void {
