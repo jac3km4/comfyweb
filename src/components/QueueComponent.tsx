@@ -12,7 +12,7 @@ function QueueComponent({ queue, onDeleteFromQueue }: Props): JSX.Element {
     <div className="m-auto w-full text-center text-stone-500">Nothing to do!</div>
   ) : (
     <div className="overflow-y-scroll w-full">
-      {queue.reverse().map((it, i) => (
+      {queue.map((it, i) => (
         <div className="p-1 bg-stone-800 odd:bg-stone-900" key={i}>
           {i + 1}. {it.prompts.length === 0 ? 'no prompt' : it.prompts.join(' ')}
           {i !== 0 ? (
