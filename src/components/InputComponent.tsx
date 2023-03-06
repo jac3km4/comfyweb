@@ -1,20 +1,18 @@
 import { memo, useReducer } from 'react'
-import { useAppStore } from '../store'
-import { type NodeId, Input } from '../types'
+import { Input } from '../types'
 
 interface InputProps {
-  id: NodeId
+  value: any
   name: string
   input: Input
   onChange: (val: any) => void
 }
 
-function InputComponent({ id, name, input, onChange }: InputProps): JSX.Element {
-  const storedValue = useAppStore((st) => st.graph[id].fields[name])
+function InputComponent({ value, name, input, onChange }: InputProps): JSX.Element {
   const [state, dispatch] = useReducer((state: any, update: any) => {
     onChange(update)
     return update
-  }, storedValue)
+  }, value)
 
   if (Input.isList(input)) {
     return (

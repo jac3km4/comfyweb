@@ -4,7 +4,7 @@ import { type OnPropChange } from '../store'
 import { type Widget, Input, type NodeId } from '../types'
 import { TrashIcon, DocumentDuplicateIcon, ArrowsPointingInIcon } from '@heroicons/react/24/outline'
 import './NodeComponent.css'
-import InputComponent from './InputComponent'
+import { InputContainer } from '../containers'
 
 export const NODE_IDENTIFIER = 'sdNode'
 
@@ -75,7 +75,7 @@ function NodeComponent({
         </div>
         <div className="flex flex-col items-start grow p-1 space-y-1 text-sm">
           {params.map(({ property, input }) => (
-            <InputComponent
+            <InputContainer
               key={property}
               name={property}
               id={node.id}

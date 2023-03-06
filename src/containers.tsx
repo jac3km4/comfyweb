@@ -2,12 +2,13 @@ import { type NodeProps } from 'reactflow'
 import { shallow } from 'zustand/shallow'
 import ControlPanelComponent from './components/ControlPanelComponent'
 import GalleryComponent from './components/GalleryComponent'
+import InputComponent from './components/InputComponent'
 import NodeComponent from './components/NodeComponent'
 import NodePickerComponent from './components/NodePickerComponent'
 import QueueComponent from './components/QueueComponent'
 import WorkflowPageComponent from './components/WorkflowPageComponent'
 import { useAppStore } from './store'
-import { type Widget } from './types'
+import { type Input, type NodeId, type Widget } from './types'
 
 export function NodeContainer(props: NodeProps<Widget>): JSX.Element {
   const { progressBar, imagePreviews, onPropChange, onDuplicateNode, onDeleteNode } = useAppStore(
@@ -70,4 +71,16 @@ export function NodePickerContainer(): JSX.Element {
 export function GalleryContainer(): JSX.Element {
   const gallery = useAppStore((st) => st.gallery, shallow)
   return <GalleryComponent gallery={gallery} />
+}
+
+interface InputContainerProps {
+  id: NodeId
+  name: string
+  input: Input
+  onChange: (val: any) => void
+}
+
+export function InputContainer({ id, name, input, onChange }: InputContainerProps): JSX.Element {
+  const value = useAppStore((st) => st.graph[id].fields[name])
+  return <InputComponent value={value} name={name} input={input} onChange={onChange} />
 }
