@@ -15,8 +15,8 @@ function GalleryComponent({ gallery }: Props): JSX.Element {
           key={image}
           width="148px"
           className="p-1 rounded-xl drop-shadow-md cursor-pointer"
-          src={`http://127.0.0.1:8188/view/${image}`}
-          onClick={() => window.open(`http://127.0.0.1:8188/view/${image}`)}
+          src={`/view/${image}`}
+          onClick={() => window.open(`/view/${image}`)}
         />
       ))}
     </div>

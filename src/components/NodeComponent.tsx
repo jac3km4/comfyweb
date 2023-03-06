@@ -92,11 +92,7 @@ function NodeComponent({
       </div>
       <div>
         {imagePreviews?.map((i) => (
-          <img
-            className="max-w-xs rounded-xl drop-shadow-md mx-auto mb-2"
-            key={i}
-            src={`http://127.0.0.1:8188/view/${i}`}
-          />
+          <img className="max-w-xs rounded-xl drop-shadow-md mx-auto mb-2" key={i} src={`/view/${i}`} />
         ))}
       </div>
     </div>
