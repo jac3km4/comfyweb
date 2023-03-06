@@ -12,8 +12,6 @@ import { ControlPanelContainer, NodeContainer } from '../containers'
 const nodeTypes = { [NODE_IDENTIFIER]: NodeContainer }
 
 export default function App(): JSX.Element {
-  WsController()
-
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
       <FlowContainer></FlowContainer>
