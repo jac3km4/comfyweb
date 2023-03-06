@@ -11,7 +11,7 @@ import { useAppStore } from './store'
 import { type Input, type NodeId, type Widget } from './types'
 
 export function NodeContainer(props: NodeProps<Widget>): JSX.Element {
-  const { progressBar, imagePreviews, onPropChange, onDuplicateNode, onDeleteNode } = useAppStore(
+  const { progressBar, imagePreviews, onDuplicateNode, onDeleteNode } = useAppStore(
     (st) => ({
       progressBar: st.nodeInProgress?.id === props.id ? st.nodeInProgress.progress : undefined,
       imagePreviews: st.graph[props.id]?.images,
@@ -26,7 +26,6 @@ export function NodeContainer(props: NodeProps<Widget>): JSX.Element {
       node={props}
       progressBar={progressBar}
       imagePreviews={imagePreviews}
-      onPropChange={onPropChange}
       onDuplicateNode={onDuplicateNode}
       onDeleteNode={onDeleteNode}
     />
@@ -77,10 +76,12 @@ interface InputContainerProps {
   id: NodeId
   name: string
   input: Input
-  onChange: (val: any) => void
 }
 
-export function InputContainer({ id, name, input, onChange }: InputContainerProps): JSX.Element {
-  const value = useAppStore((st) => st.graph[id].fields[name])
-  return <InputComponent value={value} name={name} input={input} onChange={onChange} />
+export function InputContainer({ id, name, input }: InputContainerProps): JSX.Element {
+  const { value, onPropChange } = useAppStore((st) => ({
+    value: st.graph[id].fields[name],
+    onPropChange: st.onPropChange,
+  }))
+  return <InputComponent value={value} name={name} input={input} onChange={(val) => onPropChange(id, name, val)} />
 }

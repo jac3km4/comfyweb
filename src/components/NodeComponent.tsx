@@ -1,6 +1,5 @@
 import { memo } from 'react'
 import { type NodeProps, Position, type HandleType, Handle } from 'reactflow'
-import { type OnPropChange } from '../store'
 import { type Widget, Input, type NodeId } from '../types'
 import { TrashIcon, DocumentDuplicateIcon, ArrowsPointingInIcon } from '@heroicons/react/24/outline'
 import './NodeComponent.css'
@@ -12,19 +11,11 @@ interface Props {
   node: NodeProps<Widget>
   progressBar?: number
   imagePreviews?: string[]
-  onPropChange: OnPropChange
   onDuplicateNode: (id: NodeId) => void
   onDeleteNode: (id: NodeId) => void
 }
 
-function NodeComponent({
-  node,
-  progressBar,
-  imagePreviews,
-  onPropChange,
-  onDuplicateNode,
-  onDeleteNode,
-}: Props): JSX.Element {
+function NodeComponent({ node, progressBar, imagePreviews, onDuplicateNode, onDeleteNode }: Props): JSX.Element {
   const params = []
   const inputs = []
   for (const [property, input] of Object.entries(node.data.input.required)) {
@@ -75,13 +66,7 @@ function NodeComponent({
         </div>
         <div className="flex flex-col items-start grow p-1 space-y-1 text-sm">
           {params.map(({ property, input }) => (
-            <InputContainer
-              key={property}
-              name={property}
-              id={node.id}
-              input={input}
-              onChange={(val) => onPropChange(node.id, property, val)}
-            />
+            <InputContainer key={property} name={property} id={node.id} input={input} />
           ))}
         </div>
         <div className="flex flex-col py-1">
