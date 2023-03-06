@@ -69,7 +69,7 @@ function InputComponent({ value, name, input, onChange }: InputProps): JSX.Eleme
       return (
         <textarea
           style={{ height: 128, width: 260, resize: 'none' }}
-          className="px-1 grow nodrag"
+          className="px-1 grow nodrag text-xs"
           value={state}
           onChange={(ev) => dispatch(ev.target.value)}
         />
