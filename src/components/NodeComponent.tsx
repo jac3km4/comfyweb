@@ -4,6 +4,7 @@ import { type Widget, Input, type NodeId } from '../types'
 import { TrashIcon, DocumentDuplicateIcon, ArrowsPointingInIcon } from '@heroicons/react/24/outline'
 import './NodeComponent.css'
 import { InputContainer } from '../containers'
+import { getBackendUrl } from '../config'
 
 export const NODE_IDENTIFIER = 'sdNode'
 
@@ -77,7 +78,7 @@ function NodeComponent({ node, progressBar, imagePreviews, onDuplicateNode, onDe
       </div>
       <div>
         {imagePreviews?.map((i) => (
-          <img className="max-w-xs rounded-xl drop-shadow-md mx-auto mb-2" key={i} src={`/view/${i}`} />
+          <img className="max-w-xs rounded-xl drop-shadow-md mx-auto mb-2" key={i} src={getBackendUrl(`/view/${i}`)} />
         ))}
       </div>
     </div>
