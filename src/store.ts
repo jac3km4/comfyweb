@@ -44,6 +44,7 @@ export interface AppState {
   promptError?: string
   queue: QueueItem[]
   gallery: GalleryItem[]
+  previewedImageIndex?: number
   onNodesChange: OnNodesChange
   onEdgesChange: OnEdgesChange
   onConnect: OnConnect
@@ -61,6 +62,9 @@ export interface AppState {
   onQueueUpdate: () => Promise<void>
   onNodeInProgress: (id: NodeId, progress: number) => void
   onImageSave: (id: NodeId, images: string[]) => void
+  onPreviewImage: (id: number) => void
+  onPreviewImageNavigate: (next: boolean) => void
+  onHideImagePreview: () => void
 }
 
 export const useAppStore = create<AppState>((set, get) => ({
@@ -189,6 +193,21 @@ export const useAppStore = create<AppState>((set, get) => ({
       st.graph[id].images = images
       return { ...st, gallery: st.gallery.concat(images.map((image) => ({ image }))) }
     })
+  },
+  onPreviewImage: (index) => {
+    set({ previewedImageIndex: index })
+  },
+  onPreviewImageNavigate: (next) => {
+    set((st) => {
+      if (st.previewedImageIndex === undefined) {
+        return {}
+      }
+      const idx = next ? st.previewedImageIndex - 1 : st.previewedImageIndex + 1
+      return idx < 0 || idx === st.gallery.length ? {} : { previewedImageIndex: idx }
+    })
+  },
+  onHideImagePreview: () => {
+    set({ previewedImageIndex: undefined })
   },
 }))
 

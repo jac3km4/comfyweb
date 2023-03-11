@@ -7,7 +7,7 @@ import { NODE_IDENTIFIER } from './NodeComponent'
 import 'reactflow/dist/style.css'
 import { useWebSocket } from 'react-use-websocket/dist/lib/use-websocket'
 import { Message } from '../types'
-import { ControlPanelContainer, NodeContainer } from '../containers'
+import { ControlPanelContainer, ImageViewContainer, NodeContainer } from '../containers'
 import config from '../config'
 
 const nodeTypes = { [NODE_IDENTIFIER]: NodeContainer }
@@ -53,6 +53,7 @@ function FlowContainer(): JSX.Element {
       <Controls />
       <Panel position="bottom-center">
         <ControlPanelContainer />
+        <ImageViewContainer />
       </Panel>
     </ReactFlow>
   )

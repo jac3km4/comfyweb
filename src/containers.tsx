@@ -2,6 +2,7 @@ import { type NodeProps } from 'reactflow'
 import { shallow } from 'zustand/shallow'
 import ControlPanelComponent from './components/ControlPanelComponent'
 import GalleryComponent from './components/GalleryComponent'
+import ImageViewComponent from './components/ImageViewComponent'
 import InputComponent from './components/InputComponent'
 import NodeComponent from './components/NodeComponent'
 import NodePickerComponent from './components/NodePickerComponent'
@@ -68,8 +69,26 @@ export function NodePickerContainer(): JSX.Element {
 }
 
 export function GalleryContainer(): JSX.Element {
-  const gallery = useAppStore((st) => st.gallery, shallow)
-  return <GalleryComponent gallery={gallery} />
+  const { gallery, onPreviewImage } = useAppStore(
+    (st) => ({ gallery: st.gallery, onPreviewImage: st.onPreviewImage }),
+    shallow
+  )
+  return <GalleryComponent gallery={gallery} onPreviewImage={onPreviewImage} />
+}
+
+export function ImageViewContainer(): JSX.Element {
+  const { image, onHideImagePreview, onPreviewImageNavigate } = useAppStore((st) => ({
+    image: st.previewedImageIndex !== undefined ? st.gallery[st.previewedImageIndex].image : undefined,
+    onHideImagePreview: st.onHideImagePreview,
+    onPreviewImageNavigate: st.onPreviewImageNavigate,
+  }))
+  return (
+    <ImageViewComponent
+      image={image}
+      onHideImagePreview={onHideImagePreview}
+      onPreviewImageNavigate={onPreviewImageNavigate}
+    />
+  )
 }
 
 interface InputContainerProps {
