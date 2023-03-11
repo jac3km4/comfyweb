@@ -35,9 +35,9 @@ function ControlPanelComponent({ onSubmit, promptError }: Props): JSX.Element {
         style={{ width: '60vw' }}
         className="drop-shadow-lg rounded-md bg-stone-900 border-2 border-stone-400 flex flex-col overflow-hidden"
       >
-        <PanelTabs tabs={TABS} active={activeTab} onTabChange={(tab) => setState((st) => ({ ...st, activeTab: tab }))}>
+        <PanelTabs tabs={TABS} active={activeTab} onTabChange={(tab) => setState({ minimized: false, activeTab: tab })}>
           <button
-            className="absolute bg-teal-800 px-2 left-2 py-0.5 mx-0.5 cursor-pointer"
+            className="absolute bg-teal-800 p-2 left-2 mx-0.5 cursor-pointer"
             onClick={() => {
               void onSubmit()
             }}
@@ -82,7 +82,7 @@ interface PanelTabsProps<T> {
 
 function PanelTabs<T extends string>({ tabs, active, onTabChange, children }: PanelTabsProps<T>): JSX.Element {
   return (
-    <div className="flex flex-row justify-end border-b-2 bg-stone-800 border-stone-400 px-2 rounded-t-md">
+    <div className="flex flex-row justify-end bg-stone-800 px-2">
       {tabs.map((t) => (
         <PanelTab key={t} label={t} isActive={t === active} onClick={() => onTabChange(t)} />
       ))}
@@ -99,7 +99,7 @@ interface PanelTabProps {
 
 function PanelTab({ label, isActive, onClick }: PanelTabProps): JSX.Element {
   const bgClasses = isActive ? ['bg-stone-700'] : ['bg-stone-800']
-  const defaultClasses = ['px-2', 'py-0.5', 'mx-0.5', 'cursor-pointer']
+  const defaultClasses = ['p-2', 'mx-0.5', 'cursor-pointer']
   return (
     <div className={defaultClasses.concat(bgClasses).join(' ')} onClick={onClick}>
       {label}
