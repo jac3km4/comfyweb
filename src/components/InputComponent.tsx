@@ -1,4 +1,4 @@
-import { memo, useReducer } from 'react'
+import { memo } from 'react'
 import { Input } from '../types'
 
 interface InputProps {
@@ -9,15 +9,10 @@ interface InputProps {
 }
 
 function InputComponent({ value, name, input, onChange }: InputProps): JSX.Element {
-  const [state, dispatch] = useReducer((state: any, update: any) => {
-    onChange(update)
-    return update
-  }, value)
-
   if (Input.isList(input)) {
     return (
       <Labelled name={name}>
-        <select className="grow text-right nodrag" value={state} onChange={(ev) => dispatch(ev.target.value)}>
+        <select className="grow text-right nodrag" value={value} onChange={(ev) => onChange(ev.target.value)}>
           {input[0].map((k) => (
             <option key={k} value={k}>
               {k}
@@ -33,8 +28,8 @@ function InputComponent({ value, name, input, onChange }: InputProps): JSX.Eleme
         <input
           type="checkbox"
           className="grow text-right nodrag"
-          value={state}
-          onChange={(ev) => dispatch(ev.target.checked)}
+          value={value}
+          onChange={(ev) => onChange(ev.target.checked)}
         />
       </Labelled>
     )
@@ -45,8 +40,8 @@ function InputComponent({ value, name, input, onChange }: InputProps): JSX.Eleme
         <input
           type="number"
           className="grow text-right nodrag"
-          value={state}
-          onChange={(ev) => dispatch(ev.target.valueAsNumber)}
+          value={value}
+          onChange={(ev) => onChange(ev.target.valueAsNumber)}
         />
       </Labelled>
     )
@@ -57,8 +52,8 @@ function InputComponent({ value, name, input, onChange }: InputProps): JSX.Eleme
         <input
           type="number"
           className="grow text-right nodrag"
-          value={state}
-          onChange={(ev) => dispatch(ev.target.valueAsNumber)}
+          value={value}
+          onChange={(ev) => onChange(ev.target.valueAsNumber)}
         />
       </Labelled>
     )
@@ -70,8 +65,8 @@ function InputComponent({ value, name, input, onChange }: InputProps): JSX.Eleme
         <textarea
           style={{ height: 128, width: 260, resize: 'none' }}
           className="px-1 grow nodrag text-xs"
-          value={state}
-          onChange={(ev) => dispatch(ev.target.value)}
+          value={value}
+          onChange={(ev) => onChange(ev.target.value)}
         />
       )
     }
@@ -80,8 +75,8 @@ function InputComponent({ value, name, input, onChange }: InputProps): JSX.Eleme
         <input
           type="text"
           className="grow text-right nodrag"
-          value={state}
-          onChange={(ev) => dispatch(ev.target.value)}
+          value={value}
+          onChange={(ev) => onChange(ev.target.value)}
         />
       </Labelled>
     )

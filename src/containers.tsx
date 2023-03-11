@@ -74,19 +74,24 @@ export function NodePickerContainer(): JSX.Element {
 }
 
 export function GalleryContainer(): JSX.Element {
-  const { gallery, onPreviewImage } = useAppStore(
-    (st) => ({ gallery: st.gallery, onPreviewImage: st.onPreviewImage }),
+  const { gallery, onPreviewImage, onLoadImageWorkflow } = useAppStore(
+    (st) => ({ gallery: st.gallery, onPreviewImage: st.onPreviewImage, onLoadImageWorkflow: st.onLoadImageWorkflow }),
     shallow
   )
-  return <GalleryComponent gallery={gallery} onPreviewImage={onPreviewImage} />
+  return (
+    <GalleryComponent gallery={gallery} onPreviewImage={onPreviewImage} onLoadImageWorkflow={onLoadImageWorkflow} />
+  )
 }
 
 export function ImageViewContainer(): JSX.Element {
-  const { image, onHideImagePreview, onPreviewImageNavigate } = useAppStore((st) => ({
-    image: st.previewedImageIndex !== undefined ? st.gallery[st.previewedImageIndex].image : undefined,
-    onHideImagePreview: st.onHideImagePreview,
-    onPreviewImageNavigate: st.onPreviewImageNavigate,
-  }))
+  const { image, onHideImagePreview, onPreviewImageNavigate } = useAppStore(
+    (st) => ({
+      image: st.previewedImageIndex !== undefined ? st.gallery[st.previewedImageIndex]?.image : undefined,
+      onHideImagePreview: st.onHideImagePreview,
+      onPreviewImageNavigate: st.onPreviewImageNavigate,
+    }),
+    shallow
+  )
   return (
     <ImageViewComponent
       image={image}
@@ -103,9 +108,12 @@ interface InputContainerProps {
 }
 
 export function InputContainer({ id, name, input }: InputContainerProps): JSX.Element {
-  const { value, onPropChange } = useAppStore((st) => ({
-    value: st.graph[id].fields[name],
-    onPropChange: st.onPropChange,
-  }))
+  const { value, onPropChange } = useAppStore(
+    (st) => ({
+      value: st.graph[id]?.fields[name],
+      onPropChange: st.onPropChange,
+    }),
+    shallow
+  )
   return <InputComponent value={value} name={name} input={input} onChange={(val) => onPropChange(id, name, val)} />
 }

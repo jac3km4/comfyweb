@@ -1,17 +1,15 @@
 import { getBackendUrl } from './config'
-import {
-  Input,
-  type Connection,
-  type NodeId,
-  type PropertyKey,
-  type SDNode,
-  type Widget,
-  type WidgetKey,
-} from './types'
+import { type PersistedGraph } from './persistence'
+import { Input, type NodeId, type PropertyKey, type Widget, type WidgetKey } from './types'
 
 interface PromptRequest {
   client_id?: string
   prompt: Record<NodeId, Node>
+  extra_data?: ExtraData
+}
+
+interface ExtraData {
+  extra_pnginfo?: Record<string, any>
 }
 
 interface PromptResponse {
@@ -65,37 +63,32 @@ export async function sendPrompt(prompt: PromptRequest): Promise<PromptResponse>
   return { error }
 }
 
-export function createPrompt(
-  graph: Record<string, SDNode>,
-  widgets: Record<string, Widget>,
-  connections: Connection[],
-  clientId?: string
-): PromptRequest {
+export function createPrompt(graph: PersistedGraph, widgets: Record<string, Widget>, clientId?: string): PromptRequest {
   const prompt: Record<NodeId, Node> = {}
 
-  for (const [id, node] of Object.entries(graph)) {
-    const inputs = { ...node.fields }
+  for (const [id, node] of Object.entries(graph.data)) {
+    const inputs = { ...node.value.fields }
     for (const [property, value] of Object.entries(inputs)) {
-      const input = widgets[node.widget].input.required[property]
+      const input = widgets[node.value.widget].input.required[property]
       if (Input.isInt(input) && input[1].randomizable === true && value === -1) {
         inputs[property] = Math.random() * Number.MAX_SAFE_INTEGER
       }
     }
 
     prompt[id] = {
-      class_type: node.widget,
+      class_type: node.value.widget,
       inputs,
     }
   }
 
-  for (const edge of connections) {
-    const source = graph[edge.source]
+  for (const edge of graph.connections) {
+    const source = graph.data[edge.source]
     if (source === undefined) {
       continue
     }
-    const outputIndex = widgets[source.widget].output.findIndex((f) => f === edge.sourceHandle)
+    const outputIndex = widgets[source.value.widget].output.findIndex((f) => f === edge.sourceHandle)
     prompt[edge.target].inputs[edge.targetHandle] = [edge.source, outputIndex]
   }
 
-  return { prompt, client_id: clientId }
+  return { prompt, client_id: clientId, extra_data: { extra_pnginfo: { workflow: graph } } }
 }
