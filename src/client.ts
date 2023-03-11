@@ -1,3 +1,4 @@
+import config from './config'
 import {
   Input,
   type Connection,
@@ -37,26 +38,26 @@ interface HistoryItem {
 }
 
 export async function getWidgetLibrary(): Promise<Record<string, Widget>> {
-  return await fetch('/object_info').then(async (r) => await r.json())
+  return await fetch(getUrl('/object_info')).then(async (r) => await r.json())
 }
 
 export async function getQueue(): Promise<Queue> {
-  return await fetch('/queue').then(async (r) => await r.json())
+  return await fetch(getUrl('/queue')).then(async (r) => await r.json())
 }
 
 export async function deleteFromQueue(id: number): Promise<void> {
-  await fetch('/queue', {
+  await fetch(getUrl('/queue'), {
     method: 'POST',
     body: JSON.stringify({ delete: [id] }),
   })
 }
 
 export async function getHistory(): Promise<History> {
-  return await fetch('/history').then(async (r) => await r.json())
+  return await fetch(getUrl('/history')).then(async (r) => await r.json())
 }
 
 export async function sendPrompt(prompt: PromptRequest): Promise<PromptResponse> {
-  const resp = await fetch('/prompt', {
+  const resp = await fetch(getUrl('/prompt'), {
     method: 'POST',
     body: JSON.stringify(prompt),
   })
@@ -97,4 +98,8 @@ export function createPrompt(
   }
 
   return { prompt, client_id: clientId }
+}
+
+function getUrl(endpoint: string): string {
+  return `${config.protocol}//${config.host}${endpoint}`
 }

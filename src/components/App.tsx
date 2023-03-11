@@ -8,6 +8,7 @@ import 'reactflow/dist/style.css'
 import { useWebSocket } from 'react-use-websocket/dist/lib/use-websocket'
 import { Message } from '../types'
 import { ControlPanelContainer, NodeContainer } from '../containers'
+import config from '../config'
 
 const nodeTypes = { [NODE_IDENTIFIER]: NodeContainer }
 
@@ -70,7 +71,7 @@ function WsController(): JSX.Element {
     shallow
   )
 
-  useWebSocket(`ws://${window.location.host}/ws`, {
+  useWebSocket(`ws://${config.host}/ws`, {
     onMessage: (ev) => {
       const msg = JSON.parse(ev.data)
       if (Message.isStatus(msg)) {
