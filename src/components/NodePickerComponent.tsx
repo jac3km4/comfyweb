@@ -26,7 +26,7 @@ function NodePickerComponent({ widgets, onAddNode }: Props): JSX.Element {
             {items.map((i) => (
               <div
                 key={i.name}
-                className="text-xs p-1 my-1 bg-stone-800 rounded-md cursor-pointer whitespace-nowrap"
+                className="text-xs p-1 my-1 bg-stone-800 hover:bg-stone-700 rounded-md cursor-pointer whitespace-nowrap"
                 onClick={() => onAddNode(i)}
               >
                 <PlusIcon className="h-4 w-4 inline" />

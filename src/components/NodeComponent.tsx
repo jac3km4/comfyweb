@@ -90,15 +90,17 @@ function NodeComponent({
         </div>
       </div>
       <div className="m-auto flex flex-wrap max-w-xs mb-2">
-        {imagePreviews?.map(({ image, index }) => (
-          <div className="flex grow basis-1/2" key={image}>
-            <img
-              className="w-full rounded-xl drop-shadow-md m-1"
-              src={getBackendUrl(`/view/${image}`)}
-              onClick={() => onPreviewImage(index)}
-            />
-          </div>
-        ))}
+        {imagePreviews
+          ?.map(({ image, index }) => (
+            <div className="flex grow basis-1/2" key={image}>
+              <img
+                className="w-full rounded-xl drop-shadow-md p-1"
+                src={getBackendUrl(`/view/${image}`)}
+                onClick={() => onPreviewImage(index)}
+              />
+            </div>
+          ))
+          .reverse()}
       </div>
     </div>
   )
