@@ -37,7 +37,7 @@ function ControlPanelComponent({ onSubmit, promptError }: Props): JSX.Element {
       >
         <PanelTabs tabs={TABS} active={activeTab} onTabChange={(tab) => setState({ minimized: false, activeTab: tab })}>
           <button
-            className="absolute bg-teal-800 p-2 left-2 mx-0.5 cursor-pointer"
+            className="absolute bg-teal-800 hover:bg-teal-700 p-2 left-2 mx-0.5 cursor-pointer"
             onClick={() => {
               void onSubmit()
             }}
@@ -98,7 +98,7 @@ interface PanelTabProps {
 }
 
 function PanelTab({ label, isActive, onClick }: PanelTabProps): JSX.Element {
-  const bgClasses = isActive ? ['bg-stone-700'] : ['bg-stone-800']
+  const bgClasses = isActive ? ['bg-stone-600'] : ['bg-stone-800', 'hover:bg-stone-700']
   const defaultClasses = ['p-2', 'mx-0.5', 'cursor-pointer']
   return (
     <div className={defaultClasses.concat(bgClasses).join(' ')} onClick={onClick}>
