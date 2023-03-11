@@ -60,14 +60,14 @@ function FlowContainer(): JSX.Element {
 }
 
 function WsController(): JSX.Element {
-  const { clientId, nodeIdInProgress, onNewClientId, onQueueUpdate, onNodeInProgress, onImagePreview } = useAppStore(
+  const { clientId, nodeIdInProgress, onNewClientId, onQueueUpdate, onNodeInProgress, onImageSave } = useAppStore(
     (st) => ({
       clientId: st.clientId,
       nodeIdInProgress: st.nodeInProgress?.id,
       onNewClientId: st.onNewClientId,
       onQueueUpdate: st.onQueueUpdate,
       onNodeInProgress: st.onNodeInProgress,
-      onImagePreview: st.onImageSave,
+      onImageSave: st.onImageSave,
     }),
     shallow
   )
@@ -93,7 +93,7 @@ function WsController(): JSX.Element {
       } else if (Message.isExecuted(msg)) {
         const images = msg.data.output.images
         if (Array.isArray(images)) {
-          onImagePreview(msg.data.node, images)
+          onImageSave(msg.data.node, images)
         }
       }
     },
