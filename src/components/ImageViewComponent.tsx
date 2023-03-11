@@ -31,7 +31,7 @@ function ImageViewComponent({ image, onHideImagePreview, onPreviewImageNavigate 
       isOpen={image !== undefined}
       onRequestClose={onHideImagePreview}
     >
-      <div className="w-full h-full">
+      <div className="flex w-full h-full">
         <img
           className="max-w-full max-h-full m-auto"
           src={image !== undefined ? getBackendUrl(`/view/${image}`) : undefined}
