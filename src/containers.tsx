@@ -12,10 +12,14 @@ import { useAppStore } from './store'
 import { type Input, type NodeId, type Widget } from './types'
 
 export function NodeContainer(props: NodeProps<Widget>): JSX.Element {
-  const { progressBar, imagePreviews, onDuplicateNode, onDeleteNode } = useAppStore(
+  const { progressBar, imagePreviews, onPreviewImage, onDuplicateNode, onDeleteNode } = useAppStore(
     (st) => ({
       progressBar: st.nodeInProgress?.id === props.id ? st.nodeInProgress.progress : undefined,
-      imagePreviews: st.graph[props.id]?.images,
+      imagePreviews: st.graph[props.id]?.images?.flatMap((image) => {
+        const index = st.gallery.findIndex((i) => i.image === image)
+        return index !== -1 ? { image, index } : []
+      }),
+      onPreviewImage: st.onPreviewImage,
       onPropChange: st.onPropChange,
       onDuplicateNode: st.onDuplicateNode,
       onDeleteNode: st.onDeleteNode,
@@ -27,6 +31,7 @@ export function NodeContainer(props: NodeProps<Widget>): JSX.Element {
       node={props}
       progressBar={progressBar}
       imagePreviews={imagePreviews}
+      onPreviewImage={onPreviewImage}
       onDuplicateNode={onDuplicateNode}
       onDeleteNode={onDeleteNode}
     />

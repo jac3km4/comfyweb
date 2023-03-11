@@ -8,15 +8,28 @@ import { getBackendUrl } from '../config'
 
 export const NODE_IDENTIFIER = 'sdNode'
 
+interface ImagePreview {
+  image: string
+  index: number
+}
+
 interface Props {
   node: NodeProps<Widget>
   progressBar?: number
-  imagePreviews?: string[]
+  imagePreviews?: ImagePreview[]
+  onPreviewImage: (idx: number) => void
   onDuplicateNode: (id: NodeId) => void
   onDeleteNode: (id: NodeId) => void
 }
 
-function NodeComponent({ node, progressBar, imagePreviews, onDuplicateNode, onDeleteNode }: Props): JSX.Element {
+function NodeComponent({
+  node,
+  progressBar,
+  imagePreviews,
+  onPreviewImage,
+  onDuplicateNode,
+  onDeleteNode,
+}: Props): JSX.Element {
   const params = []
   const inputs = []
   for (const [property, input] of Object.entries(node.data.input.required)) {
@@ -76,9 +89,15 @@ function NodeComponent({ node, progressBar, imagePreviews, onDuplicateNode, onDe
           ))}
         </div>
       </div>
-      <div>
-        {imagePreviews?.map((i) => (
-          <img className="max-w-xs rounded-xl drop-shadow-md mx-auto mb-2" key={i} src={getBackendUrl(`/view/${i}`)} />
+      <div className="m-auto flex flex-wrap max-w-xs mb-2">
+        {imagePreviews?.map(({ image, index }) => (
+          <div className="flex grow basis-1/2" key={image}>
+            <img
+              className="w-full rounded-xl drop-shadow-md m-1"
+              src={getBackendUrl(`/view/${image}`)}
+              onClick={() => onPreviewImage(index)}
+            />
+          </div>
         ))}
       </div>
     </div>
