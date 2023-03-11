@@ -146,4 +146,5 @@ export interface GalleryItem {
 export interface QueueItem {
   id: number
   prompts: string[]
+  model?: string
 }

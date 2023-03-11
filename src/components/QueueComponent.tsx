@@ -13,8 +13,14 @@ function QueueComponent({ queue, onDeleteFromQueue }: Props): JSX.Element {
   ) : (
     <div className="overflow-y-scroll w-full">
       {queue.map((it, i) => (
-        <div className="p-1 bg-stone-800 odd:bg-stone-900" key={i}>
-          {i + 1}. {it.prompts.length === 0 ? 'no prompt' : it.prompts.join(' ')}
+        <div className="p-1 flex bg-stone-800 odd:bg-stone-900 items-center" key={i}>
+          {i + 1}.
+          <div className="flex flex-wrap">
+            <Label label="model" value={it.model === undefined ? 'N/A' : it.model} />
+            {it.prompts.map((prompt, i) => (
+              <Label key={i} label="prompt" value={prompt} />
+            ))}
+          </div>
           {i !== 0 ? (
             <TrashIcon
               className="inline h-5 w-5 mx-1 text-red-500 align-text-bottom cursor-pointer"
@@ -27,6 +33,14 @@ function QueueComponent({ queue, onDeleteFromQueue }: Props): JSX.Element {
           )}
         </div>
       ))}
+    </div>
+  )
+}
+
+function Label({ label, value }: { label: string; value: string }): JSX.Element {
+  return (
+    <div className="p-1 m-1 bg-stone-700 rounded-md text-xs whitespace-nowrap overflow-hidden text-ellipsis max-w-lg">
+      {label}: {value}
     </div>
   )
 }

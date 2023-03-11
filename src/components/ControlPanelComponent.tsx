@@ -82,7 +82,7 @@ interface PanelTabsProps<T> {
 
 function PanelTabs<T extends string>({ tabs, active, onTabChange, children }: PanelTabsProps<T>): JSX.Element {
   return (
-    <div className="flex flex-row justify-end bg-stone-800 px-2">
+    <div className="flex flex-row justify-end bg-stone-800 px-2 drop-shadow-md">
       {tabs.map((t) => (
         <PanelTab key={t} label={t} isActive={t === active} onClick={() => onTabChange(t)} />
       ))}

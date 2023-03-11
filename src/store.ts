@@ -178,10 +178,12 @@ export const useAppStore = create<AppState>((set, get) => ({
       .concat(history.queue_pending)
       .filter(([i, id, graph, client]) => client.client_id === state.clientId)
       .map(([i, id, graph]) => {
-        const prompts = Object.entries(graph).flatMap(([id, node]) =>
+        const prompts = Object.values(graph).flatMap((node) =>
           node.class_type === 'CLIPTextEncode' && node.inputs.text !== undefined ? [node.inputs.text] : []
         )
-        return { id, prompts }
+        const checkpoint = Object.values(graph).find((node) => node.class_type.startsWith('CheckpointLoader'))
+        const model = checkpoint?.inputs?.ckpt_name
+        return { id, prompts, model }
       })
     set({ queue })
   },
