@@ -32,7 +32,7 @@ function ControlPanelComponent({ onSubmit, promptError }: Props): JSX.Element {
         <></>
       )}
       <div
-        style={{ width: '60vw' }}
+        style={{ width: '64vw' }}
         className="drop-shadow-lg rounded-md bg-stone-900 border-2 border-stone-400 flex flex-col overflow-hidden"
       >
         <PanelTabs tabs={TABS} active={activeTab} onTabChange={(tab) => setState({ minimized: false, activeTab: tab })}>
