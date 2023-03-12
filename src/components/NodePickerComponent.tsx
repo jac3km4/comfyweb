@@ -18,11 +18,11 @@ function NodePickerComponent({ widgets, onAddNode }: Props): JSX.Element {
   }
 
   return (
-    <div className="flex flex-row p-1 h-full overflow-x-scroll">
+    <div className="flex flex-row p-1 h-full w-full overflow-x-scroll">
       {Object.entries(byCategory).map(([cat, items]) => (
         <div key={cat} className="flex flex-col px-1">
           <h3 className="text-md font-bold mx-auto">{cat}</h3>
-          <div>
+          <div className="overflow-y-scroll">
             {items.map((i) => (
               <div
                 key={i.name}
