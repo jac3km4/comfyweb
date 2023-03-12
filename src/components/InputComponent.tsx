@@ -1,6 +1,8 @@
 import { memo } from 'react'
 import { Input } from '../types'
 
+const MAX_SELECT_NAME = 36
+
 interface InputProps {
   value: any
   name: string
@@ -12,10 +14,10 @@ function InputComponent({ value, name, input, onChange }: InputProps): JSX.Eleme
   if (Input.isList(input)) {
     return (
       <Labelled name={name}>
-        <select className="grow text-right nodrag" value={value} onChange={(ev) => onChange(ev.target.value)}>
+        <select className="px-1 grow nodrag" value={value} onChange={(ev) => onChange(ev.target.value)}>
           {input[0].map((k) => (
             <option key={k} value={k}>
-              {k}
+              {k.length > MAX_SELECT_NAME ? `…${k.substring(k.length - MAX_SELECT_NAME + 1)}` : k}
             </option>
           ))}
         </select>
@@ -27,7 +29,7 @@ function InputComponent({ value, name, input, onChange }: InputProps): JSX.Eleme
       <Labelled name={name}>
         <input
           type="checkbox"
-          className="grow text-right nodrag"
+          className="px-1 grow nodrag"
           value={value}
           onChange={(ev) => onChange(ev.target.checked)}
         />
@@ -39,7 +41,7 @@ function InputComponent({ value, name, input, onChange }: InputProps): JSX.Eleme
       <Labelled name={name}>
         <input
           type="number"
-          className="grow text-right nodrag"
+          className="px-1 grow nodrag"
           value={value}
           onChange={(ev) => onChange(ev.target.valueAsNumber)}
         />
@@ -51,7 +53,7 @@ function InputComponent({ value, name, input, onChange }: InputProps): JSX.Eleme
       <Labelled name={name}>
         <input
           type="number"
-          className="grow text-right nodrag"
+          className="px-1 grow nodrag"
           value={value}
           onChange={(ev) => onChange(ev.target.valueAsNumber)}
         />
@@ -63,7 +65,7 @@ function InputComponent({ value, name, input, onChange }: InputProps): JSX.Eleme
     if (args.multiline === true) {
       return (
         <textarea
-          style={{ height: 128, width: 260, resize: 'none' }}
+          style={{ height: 128, width: 260 }}
           className="px-1 grow nodrag text-xs"
           value={value}
           onChange={(ev) => onChange(ev.target.value)}
@@ -72,12 +74,7 @@ function InputComponent({ value, name, input, onChange }: InputProps): JSX.Eleme
     }
     return (
       <Labelled name={name}>
-        <input
-          type="text"
-          className="grow text-right nodrag"
-          value={value}
-          onChange={(ev) => onChange(ev.target.value)}
-        />
+        <input type="text" className="px-1 grow nodrag" value={value} onChange={(ev) => onChange(ev.target.value)} />
       </Labelled>
     )
   }

@@ -2,7 +2,7 @@
   position: absolute;
   height: 100%;
   opacity: 0.3;
-  transition: width 1s ease-in-out;
+  transition: width 1s ease-out;
 }
 
 .graph-node {

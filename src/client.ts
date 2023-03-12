@@ -87,7 +87,9 @@ export function createPrompt(graph: PersistedGraph, widgets: Record<string, Widg
       continue
     }
     const outputIndex = widgets[source.value.widget].output.findIndex((f) => f === edge.sourceHandle)
-    prompt[edge.target].inputs[edge.targetHandle] = [edge.source, outputIndex]
+    if (prompt[edge.target] !== undefined) {
+      prompt[edge.target].inputs[edge.targetHandle] = [edge.source, outputIndex]
+    }
   }
 
   return { prompt, client_id: clientId, extra_data: { extra_pnginfo: { workflow: graph } } }
