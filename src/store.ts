@@ -145,7 +145,11 @@ export const useAppStore = create<AppState>((set, get) => ({
       let state: AppState = { ...st, nodes: [], edges: [], counter: 0, graph: {} }
       for (const [key, node] of Object.entries(workflow.data)) {
         const widget = state.widgets[node.value.widget]
-        state = AppState.addNode(state, widget, node.value, node.position, parseInt(key))
+        if (widget !== undefined) {
+          state = AppState.addNode(state, widget, node.value, node.position, parseInt(key))
+        } else {
+          console.warn(`Unknown widget ${node.value.widget}`)
+        }
       }
       for (const connection of workflow.connections) {
         state = AppState.addConnection(state, connection)
