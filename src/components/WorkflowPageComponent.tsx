@@ -8,13 +8,13 @@ interface Props {
 
 function WorkflowPageComponent({ onLoadWorkflow, onSaveWorkflow }: Props): JSX.Element {
   return (
-    <div className="py-4">
-      <label className="p-2 m-4 cursor-pointer bg-stone-800 hover:bg-stone-700 rounded-md cursor-pointer">
+    <div className="px-2 py-4">
+      <label className="p-2 cursor-pointer bg-stone-800 hover:bg-stone-700 rounded-md cursor-pointer">
         Load workflow
         <input type="file" className="hidden" onChange={(ev) => readWorkflowFromFile(ev, onLoadWorkflow)}></input>
       </label>
       <div
-        className="p-2 m-4 cursor-pointer bg-stone-800 hover:bg-stone-700 rounded-md cursor-pointer"
+        className="p-2 my-4 cursor-pointer bg-stone-800 hover:bg-stone-700 rounded-md cursor-pointer"
         onClick={onSaveWorkflow}
       >
         Save workflow
