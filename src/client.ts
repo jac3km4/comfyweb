@@ -1,5 +1,5 @@
 import { getBackendUrl } from './config'
-import { type PersistedGraph } from './persistence'
+import { type PersistedNode, type PersistedGraph } from './persistence'
 import { Input, type NodeId, type PropertyKey, type Widget, type WidgetKey } from './types'
 
 interface PromptRequest {
@@ -65,19 +65,24 @@ export async function sendPrompt(prompt: PromptRequest): Promise<PromptResponse>
 
 export function createPrompt(graph: PersistedGraph, widgets: Record<string, Widget>, clientId?: string): PromptRequest {
   const prompt: Record<NodeId, Node> = {}
+  const data: Record<NodeId, PersistedNode> = {}
 
   for (const [id, node] of Object.entries(graph.data)) {
-    const inputs = { ...node.value.fields }
-    for (const [property, value] of Object.entries(inputs)) {
+    const fields = { ...node.value.fields }
+    for (const [property, value] of Object.entries(fields)) {
       const input = widgets[node.value.widget].input.required[property]
       if (Input.isInt(input) && input[1].randomizable === true && value === -1) {
-        inputs[property] = Math.random() * Number.MAX_SAFE_INTEGER
+        fields[property] = Math.trunc(Math.random() * Number.MAX_SAFE_INTEGER)
       }
     }
 
+    data[id] = {
+      position: node.position,
+      value: { ...node.value, fields },
+    }
     prompt[id] = {
       class_type: node.value.widget,
-      inputs,
+      inputs: fields,
     }
   }
 
@@ -92,5 +97,9 @@ export function createPrompt(graph: PersistedGraph, widgets: Record<string, Widg
     }
   }
 
-  return { prompt, client_id: clientId, extra_data: { extra_pnginfo: { workflow: graph } } }
+  return {
+    prompt,
+    client_id: clientId,
+    extra_data: { extra_pnginfo: { workflow: { connections: graph.connections, data } } },
+  }
 }
