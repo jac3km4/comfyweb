@@ -1,25 +1,21 @@
-## ComfyWeb
+# ComfyWeb
+ComfyWeb is a simple interface for ComfyUI that replaces graphs with beautiful forms.
 
-This project is an attempt to build a powerful, versatile and convenient Stable Diffusion web UI. I've developed it along with my fork of the amazing [ComfyUI](https://github.com/comfyanonymous/ComfyUI) where I've done some changes and added some features (GFPGAN etc). The UI features a React-based workflow editor with real-time progress bars, a queue system, a gallery, a node picker and a workflow manager.
+## Features
+- A simple and intuitive interface with HTML forms instead of graphs! You can easily create and
+  edit workflows without having to worry about the underlying graph structure.
+- A unified gallery view that allows you to easily preview, edit and manage both generated images as
+  well as anything that's pending in the queue.
+- Drag and drop support for ComfyUI images and workflows, they are be automatically converted
+  to a simple sequence of forms (some complex graphs might be rejected). Images generated
+  with ComfyWeb can be loaded with ComfyUI (although they're not guaranteed to be pretty!).
 
-**This project is alpha quality**
+## Usage
+This project builds into a single HTML file.
 
-## installation
+## Screenshots
+<img src="https://github.com/user-attachments/assets/a3331675-8639-4b16-84c8-15ff0a098ce0" width="360px"/>
+<img src="https://github.com/user-attachments/assets/3e3269ba-ebee-4326-9fdb-a01d1f8cc288" width="360px"/>
 
-- clone my branch with a pre-built frontend
-  ```
-  git clone -b new-ui-and-feats https://github.com/jac3km4/ComfyUI
-  ```
-- follow the README.md instructions there
-
-## features
-
-Supports almost everything that ComfyUI does (SD1, SD2, Textual Inversion, Loras), plus a few more things like LORA prompts, upscaling and face correction.
-
-## screenshots
-
-<img height="360px" src="https://user-images.githubusercontent.com/11986158/222994211-275e7562-bd4d-48c5-b21a-cfc7e9d6b2ce.png"/><img height="360px" src="https://user-images.githubusercontent.com/11986158/222994282-75944367-2685-4a6e-9cee-c10e4e0232ed.png"/>
-
-## demo
-
-<img height="360px" src="https://user-images.githubusercontent.com/11986158/222995594-6577155e-69bf-4b87-8d07-a4490c72c945.gif"/>
+## Demo
+https://github.com/user-attachments/assets/170aaac1-afca-4bbd-a153-510f0ac058b6

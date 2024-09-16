@@ -1,0 +1,122 @@
+{
+  "SDXL Workflow Template": [
+    {
+      "type": "Node",
+      "nodeType": "CheckpointLoaderSimple",
+      "form": { "ckpt_name": "zavychromaxl_v90.safetensors" }
+    },
+    {
+      "type": "Node",
+      "nodeType": "EmptyLatentImage",
+      "form": { "width": 512, "height": 512, "batch_size": 1 }
+    },
+    {
+      "type": "Aggregate",
+      "name": "Prompt",
+      "description": "Provides both positive and negative conditioning in a single step.",
+      "form": { "positive": "astronaut", "negative": "" },
+      "nodes": [
+        {
+          "type": "CLIPTextEncode",
+          "outputs": ["POSITIVE_CONDITIONING"],
+          "formMapping": { "text": "positive" }
+        },
+        {
+          "type": "CLIPTextEncode",
+          "outputs": ["NEGATIVE_CONDITIONING"],
+          "formMapping": { "text": "negative" }
+        }
+      ]
+    },
+    {
+      "type": "Node",
+      "nodeType": "KSampler",
+      "form": {
+        "seed": 0,
+        "control_after_generate": "randomize",
+        "steps": 20,
+        "cfg": 8,
+        "sampler_name": "euler",
+        "scheduler": "normal",
+        "denoise": 1
+      }
+    },
+    {
+      "type": "Aggregate",
+      "name": "Preview",
+      "description": "Performs VAEDecode and PreviewImage in a single step.",
+      "form": {},
+      "nodes": [
+        { "type": "VAEDecode", "outputs": ["IMAGE"], "formMapping": {} },
+        { "type": "PreviewImage", "outputs": ["PREVIEW"], "formMapping": {} }
+      ]
+    }
+  ],
+  "Flux GGUF Template": [
+    {
+      "type": "Node",
+      "nodeType": "EmptyLatentImage",
+      "form": { "width": "1024", "height": "1024", "batch_size": 1 }
+    },
+    {
+      "type": "Node",
+      "nodeType": "VAELoader",
+      "form": { "vae_name": "flux.safetensors" }
+    },
+    {
+      "type": "Node",
+      "nodeType": "UnetLoaderGGUF",
+      "form": { "unet_name": "flux1-dev-Q8_0.gguf" }
+    },
+    {
+      "type": "Node",
+      "nodeType": "DualCLIPLoaderGGUF",
+      "form": {
+        "clip_name1": "t5-v1_1-xxl-encoder-Q8_0.gguf",
+        "clip_name2": "clip_l.safetensors",
+        "type": "flux"
+      }
+    },
+    {
+      "type": "Aggregate",
+      "name": "Prompt",
+      "description": "Provides both positive and negative conditioning in a single step.",
+      "form": { "positive": "astronaut", "negative": "" },
+      "nodes": [
+        {
+          "type": "CLIPTextEncode",
+          "outputs": ["POSITIVE_CONDITIONING"],
+          "formMapping": { "text": "positive" }
+        },
+        {
+          "type": "CLIPTextEncode",
+          "outputs": ["NEGATIVE_CONDITIONING"],
+          "formMapping": { "text": "negative" }
+        }
+      ]
+    },
+    {
+      "type": "Node",
+      "nodeType": "KSampler",
+      "form": {
+        "seed": "0",
+        "control_after_generate": "randomize",
+        "steps": "24",
+        "cfg": "1",
+        "sampler_name": "euler",
+        "scheduler": "beta",
+        "denoise": 1
+      }
+    },
+    {
+      "type": "Aggregate",
+      "name": "Preview",
+      "description": "Performs VAEDecode and PreviewImage in a single step.",
+      "form": {},
+      "nodes": [
+        { "type": "VAEDecode", "outputs": ["IMAGE"], "formMapping": {} },
+        { "type": "PreviewImage", "outputs": ["PREVIEW"], "formMapping": {} }
+      ]
+    }
+  ]
+}

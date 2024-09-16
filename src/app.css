@@ -1,0 +1,13 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+:root {
+    color-scheme: dark;
+    background-color: theme("colors.zinc.900");
+}
+
+html,
+body {
+    height: 100%;
+}
