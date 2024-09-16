@@ -1,13 +1,13 @@
 import { getWsUrl } from "./api";
 import { Message } from "./comfy";
 import { GalleryItem } from "./gallery";
-import { errorMessage, gallery } from "../stores";
+import { errorMessage, gallery, infoMessage } from "../stores";
 
 export function spawnWebSocketListener(host: string): WebSocket {
   const ws = new WebSocket(getWsUrl(host));
 
   ws.addEventListener("open", () => {
-    console.log("Connected to the websocket");
+    infoMessage.set("Established a WebSocket connection to the ComfyUI server");
   });
 
   ws.addEventListener("message", (event) => {

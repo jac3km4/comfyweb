@@ -76,6 +76,10 @@
         downloadJson(createComfyWorkflow(graph));
     }
 
+    function handleShowError(error: string) {
+        errorMessage.set(error);
+    }
+
     function performControlAfterGenerate(step: WorkflowStep) {
         if (WorkflowStep.isNode(step)) {
             if (
@@ -138,4 +142,5 @@
     on:enqueue={(ev) => handleEnqueue(ev.detail)}
     on:saveWorkflow={(ev) => handleSaveWorkflow(ev.detail)}
     on:saveAsComfyUIWorkflow={(ev) => handleSaveAsComfyUIWorkflow(ev.detail)}
+    on:showError={(ev) => handleShowError(ev.detail)}
 />

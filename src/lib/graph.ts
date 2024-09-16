@@ -45,10 +45,14 @@ export function topologicallySortedNodes<N>(edges: [N, N][]): N[] {
   }
 
   if (result.length !== graph.size) {
-    throw new Error("The graph has at least one cycle");
+    throw new GraphCycleError();
   }
 
   return result;
+}
+
+export class GraphCycleError extends Error {
+  message = "The graph has at least one cycle";
 }
 
 class PriorityQueue<T> {

@@ -9,11 +9,7 @@ import {
   type PromptRequest,
   type Workflow,
 } from "./comfy";
-import {
-  generateGraphMetadata,
-  WorkflowStep,
-  type GraphMetadata,
-} from "./workflow";
+import { WorkflowStep, type GraphMetadata } from "./workflow";
 
 export const clientId = R.randomString(8);
 

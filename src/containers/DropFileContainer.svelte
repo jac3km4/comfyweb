@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { GraphCycleError } from "../lib/graph";
     import {
         loadFromDataTransfer,
         WorkflowItem,
@@ -20,7 +21,9 @@
                     );
                 }
             } catch (error) {
-                if (error instanceof WorkflowLoadRequestError) {
+                if (error instanceof GraphCycleError) {
+                    errorMessage.set("The provided workflow contains a cycle");
+                } else if (error instanceof WorkflowLoadRequestError) {
                     errorMessage.set(
                         `Could not load workflow from file: ${error.message}`,
                     );

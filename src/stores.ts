@@ -5,7 +5,13 @@ import type { NodeLibrary } from "./lib/comfy";
 import type { GalleryItem } from "./lib/gallery";
 import type { WorkflowItem } from "./lib/workflow";
 
-export const errorMessage: Writable<string | undefined> = writable();
+export const infoMessage: Writable<string | undefined> = writable();
+export const errorMessage: Writable<string | undefined> = writable(
+  undefined,
+  (set) => {
+    infoMessage.subscribe(() => set(undefined));
+  },
+);
 
 export const serverHost: Writable<string> = writable("127.0.0.1:8188");
 

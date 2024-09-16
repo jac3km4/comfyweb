@@ -1,4 +1,5 @@
 <script lang="ts">
+    import * as R from "remeda";
     import { createEventDispatcher } from "svelte";
 
     import { Button, Input, Label, TabItem, Tabs } from "flowbite-svelte";
@@ -19,6 +20,7 @@
         enqueue: WorkflowItem[];
         saveWorkflow: WorkflowItem[];
         saveAsComfyUIWorkflow: WorkflowItem[];
+        showError: string;
     }>();
 
     function onDropdownSelect(value: PickerValue) {
@@ -31,11 +33,39 @@
                 ),
             ];
         } else if (PickerValue.isAggregate(value)) {
+            const result = validateStep(value.step);
+            if (result !== undefined) {
+                dispatch("showError", result);
+                return;
+            }
+
             workflow = [...workflow, WorkflowItem.fromStep(value.step, true)];
         } else if (PickerValue.isWorkflowTemplate(value)) {
+            const result = R.reduce<WorkflowStep, string | undefined>(
+                value.steps,
+                (acc, step) => acc ?? validateStep(step),
+                undefined,
+            );
+            if (result !== undefined) {
+                dispatch("showError", result);
+                return;
+            }
+
             workflow = value.steps.map((step) =>
                 WorkflowItem.fromStep(step, true),
             );
+        }
+    }
+
+    function validateStep(step: WorkflowStep): string | undefined {
+        if (WorkflowStep.isNode(step)) {
+            if (library[step.nodeType] === undefined)
+                return `Node type ${step.nodeType} not found`;
+        } else if (WorkflowStep.isAggregate(step)) {
+            const bad = step.nodes.find(
+                (node) => library[node.type] === undefined,
+            );
+            if (bad !== undefined) return `Node type ${bad.type} not found`;
         }
     }
 </script>
