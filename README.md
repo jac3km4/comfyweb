@@ -20,8 +20,8 @@ python main.py --enable-cors-header '*'
 If you want to connect to a remote server, you should configure the host name in the 'Manage' tab.
 
 ## Screenshots
-<img src="https://github.com/user-attachments/assets/a3331675-8639-4b16-84c8-15ff0a098ce0" width="360px"/>
-<img src="https://github.com/user-attachments/assets/3e3269ba-ebee-4326-9fdb-a01d1f8cc288" width="360px"/>
+<img src="https://github.com/user-attachments/assets/92a288fe-0e18-4d1e-a9e2-844b3b8bd2f2" width="360px"/>
+<img src="https://github.com/user-attachments/assets/a6a9c586-e17e-4df7-a1ad-8b8c70f04489" width="360px"/>
 
 ## Demo
-https://github.com/user-attachments/assets/170aaac1-afca-4bbd-a153-510f0ac058b6
+https://github.com/user-attachments/assets/5e71270a-905f-4c05-8f4e-019b12564729
