@@ -11,7 +11,13 @@ ComfyWeb is a simple interface for ComfyUI that replaces graphs with beautiful f
   with ComfyWeb can be loaded with ComfyUI (although they're not guaranteed to be pretty!).
 
 ## Usage
-This project builds into a single HTML file.
+This project builds into a single HTML file. You can try it by opening the [Github Pages build](https://jac3km4.github.io/comfyweb).
+You can also download the [latest release](https://github.com/jac3km4/comfyweb/releases/latest) and open it in your browser.
+Note that when connecting to a local ComfyUI server, you need to allow CORS:
+```bash
+python main.py --enable-cors-header '*'
+```
+If you want to connect to a remote server, you should configure the host name in the 'Manage' tab.
 
 ## Screenshots
 <img src="https://github.com/user-attachments/assets/a3331675-8639-4b16-84c8-15ff0a098ce0" width="360px"/>
