@@ -149,10 +149,10 @@ export function loadFromComfyWorkflow(
 
     const linkedInputs = new Set(node.inputs?.map(({ name }) => name) ?? []);
     const inputs = R.concat(
-      nodeType.input_order.required.map<[string, NodeInputSchema]>((name) => [
+      nodeType.input_order.required?.map<[string, NodeInputSchema]>((name) => [
         name,
-        nodeType.input.required[name],
-      ]),
+        nodeType.input.required![name],
+      ]) ?? [],
       nodeType.input_order.optional?.map<[string, NodeInputSchema]>((name) => [
         name,
         nodeType.input.optional![name],
@@ -264,7 +264,7 @@ function generateEdges(steps: WorkflowStep[], library: NodeLibrary): Edge[] {
     } else if (WorkflowStep.isNode(step)) {
       const nodeType = library[step.nodeType];
       const inputs = R.concat(
-        Object.entries(nodeType.input.required),
+        Object.entries(nodeType.input.required ?? {}),
         Object.entries(nodeType.input.optional ?? {}),
       );
 
@@ -453,7 +453,7 @@ export namespace WorkflowStep {
 
   export function newNodeWithType(type: NodeType): NodeStep {
     const form: Record<string, any> = {};
-    for (const [name, schema] of Object.entries(type.input.required)) {
+    for (const [name, schema] of Object.entries(type.input.required ?? {})) {
       if (NodeInputSchema.isBool(schema)) {
         form[name] = schema[1].default;
       } else if (NodeInputSchema.isInt(schema) && name == "seed") {

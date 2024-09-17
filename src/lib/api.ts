@@ -94,7 +94,7 @@ export function createPromptRequest(
 
 export function patchLibrary(library: NodeLibrary) {
   for (const node of Object.values(library)) {
-    for (const [name, schema] of Object.entries(node.input.required)) {
+    for (const [name, schema] of Object.entries(node.input.required ?? {})) {
       if (
         NodeInputSchema.isLink(schema) &&
         name == "positive" &&

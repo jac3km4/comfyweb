@@ -64,11 +64,11 @@ export interface NodeType {
   description: string;
   category: string;
   input: {
-    required: Record<string, NodeInputSchema>;
+    required?: Record<string, NodeInputSchema>;
     optional?: Record<string, NodeInputSchema>;
   };
   input_order: {
-    required: string[];
+    required?: string[];
     optional?: string[];
   };
   output: LinkTypeId[];
