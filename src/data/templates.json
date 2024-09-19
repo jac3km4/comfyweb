@@ -48,7 +48,7 @@
       "form": {},
       "nodes": [
         { "type": "VAEDecode", "outputs": ["IMAGE"], "formMapping": {} },
-        { "type": "PreviewImage", "outputs": ["PREVIEW"], "formMapping": {} }
+        { "type": "PreviewImage", "outputs": [], "formMapping": {} }
       ]
     }
   ],
@@ -115,7 +115,7 @@
       "form": {},
       "nodes": [
         { "type": "VAEDecode", "outputs": ["IMAGE"], "formMapping": {} },
-        { "type": "PreviewImage", "outputs": ["PREVIEW"], "formMapping": {} }
+        { "type": "PreviewImage", "outputs": [], "formMapping": {} }
       ]
     }
   ]

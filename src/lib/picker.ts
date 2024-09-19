@@ -139,7 +139,7 @@ const aggregateNodes: AggregateNodeStep[] = [
       },
       {
         type: "PreviewImage" as NodeTypeId,
-        outputs: ["PREVIEW" as LinkTypeId],
+        outputs: [],
         formMapping: {},
       },
     ],
