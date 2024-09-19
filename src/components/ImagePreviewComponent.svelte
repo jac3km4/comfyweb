@@ -6,7 +6,7 @@
     import type { ImageOutput } from "../lib/comfy";
 
     export let image: ImageOutput | undefined;
-    export let getImageUrl: (image: ImageOutput) => string;
+    export let getImageUrl: (image: ImageOutput, key?: string) => string;
 
     const dispatch = createEventDispatcher<{
         navigate: "next" | "prev";

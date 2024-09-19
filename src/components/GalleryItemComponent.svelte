@@ -9,7 +9,7 @@
     import type { ImageOutput } from "../lib/comfy";
 
     export let item: GalleryItem;
-    export let getImageUrl: (img: ImageOutput) => string;
+    export let getImageUrl: (img: ImageOutput, key?: string) => string;
 
     const dispatch = createEventDispatcher<{
         open: { index: number };
@@ -77,7 +77,7 @@
                     <img
                         class="shadow-sm shadow-zinc-900 rounded hover:cursor-pointer hover:brightness-125"
                         alt={image.filename}
-                        src={getImageUrl(image)}
+                        src={getImageUrl(image, item.id)}
                         on:click={() => dispatch("open", { index })}
                     />
                 </div>

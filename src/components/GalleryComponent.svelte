@@ -7,7 +7,7 @@
     import GalleryItemComponent from "./GalleryItemComponent.svelte";
 
     export let items: GalleryItem[] = [];
-    export let getImageUrl: (img: ImageOutput) => string;
+    export let getImageUrl: (img: ImageOutput, key?: string) => string;
 
     const dispatch = createEventDispatcher<{
         openImage: { id: PromptId; index: number };

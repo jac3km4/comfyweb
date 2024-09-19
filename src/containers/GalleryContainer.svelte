@@ -115,14 +115,14 @@
 
 <GalleryComponent
     {items}
-    getImageUrl={(img) => getImageUrl($serverHost, img)}
+    getImageUrl={(img, key) => getImageUrl($serverHost, img, key)}
     on:openImage={(ev) => handleOpenImage(ev.detail.id, ev.detail.index)}
     on:deleteItem={(ev) => handleDelete(ev.detail)}
     on:loadItem={(ev) => handleLoad(ev.detail)}
 />
 <ImagePreviewComponent
     image={openImage}
-    getImageUrl={(img) => getImageUrl($serverHost, img)}
+    getImageUrl={(img, key) => getImageUrl($serverHost, img, key)}
     on:navigate={(ev) => handleNavigatePreview(ev.detail)}
     on:close={() => (openImageId = undefined)}
 />
