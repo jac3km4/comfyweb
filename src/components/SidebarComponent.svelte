@@ -39,7 +39,10 @@
                 return;
             }
 
-            workflow = [...workflow, WorkflowItem.fromStep(value.step, true)];
+            workflow = [
+                ...workflow,
+                WorkflowItem.fromStep(R.clone(value.step), true),
+            ];
         } else if (PickerValue.isWorkflowTemplate(value)) {
             const result = R.reduce<WorkflowStep, string | undefined>(
                 value.steps,
@@ -52,7 +55,7 @@
             }
 
             workflow = value.steps.map((step) =>
-                WorkflowItem.fromStep(step, true),
+                WorkflowItem.fromStep(R.clone(step), true),
             );
         }
     }
