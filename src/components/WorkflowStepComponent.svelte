@@ -17,7 +17,7 @@
 
     let containsFields = Object.keys(fields).length > 0;
 
-    const dispatcher = createEventDispatcher<{ delete: {} }>();
+    const dispatcher = createEventDispatcher<{ delete: void }>();
 </script>
 
 <div
@@ -32,7 +32,7 @@
     <TrashBinSolid
         class="fill-red-500 hover:fill-red-300 hover:cursor-pointer"
         withEvents
-        on:click={() => dispatcher("delete", {})}
+        on:click={() => dispatcher("delete")}
     />
 </div>
 {#if expanded && containsFields}
