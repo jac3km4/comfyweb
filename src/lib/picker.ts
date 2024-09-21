@@ -30,19 +30,21 @@ export namespace NodePickerValue {
     steps: WorkflowStep[];
   }
 
-  export function isNode(value: DeepReadonly<NodePickerValue>): value is Node {
+  export function isNode(
+    value: DeepReadonly<NodePickerValue>,
+  ): value is DeepReadonly<Node> {
     return value.type === "node";
   }
 
   export function isAggregate(
     value: DeepReadonly<NodePickerValue>,
-  ): value is Aggregate {
+  ): value is DeepReadonly<Aggregate> {
     return value.type === "aggregate";
   }
 
   export function isWorkflowTemplate(
     value: DeepReadonly<NodePickerValue>,
-  ): value is WorkflowTemplate {
+  ): value is DeepReadonly<WorkflowTemplate> {
     return value.type === "workflowTemplate";
   }
 }

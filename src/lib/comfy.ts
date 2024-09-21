@@ -112,33 +112,37 @@ export namespace NodeInputSchema {
 
   export function isBool(
     i: DeepReadonly<NodeInputSchema>,
-  ): i is Primitive<"BOOL"> {
+  ): i is DeepReadonly<Primitive<"BOOL">> {
     return i[0] === "BOOL";
   }
 
   export function isInt(
     i: DeepReadonly<NodeInputSchema>,
-  ): i is Primitive<"INT"> {
+  ): i is DeepReadonly<Primitive<"INT">> {
     return i[0] === "INT";
   }
 
   export function isFloat(
     i: DeepReadonly<NodeInputSchema>,
-  ): i is Primitive<"FLOAT"> {
+  ): i is DeepReadonly<Primitive<"FLOAT">> {
     return i[0] === "FLOAT";
   }
 
   export function isString(
     i: DeepReadonly<NodeInputSchema>,
-  ): i is Primitive<"STRING"> {
+  ): i is DeepReadonly<Primitive<"STRING">> {
     return i[0] === "STRING";
   }
 
-  export function isList(i: DeepReadonly<NodeInputSchema>): i is [string[]] {
+  export function isList(
+    i: DeepReadonly<NodeInputSchema>,
+  ): i is DeepReadonly<[string[]]> {
     return Array.isArray(i[0]);
   }
 
-  export function isLink(i: DeepReadonly<NodeInputSchema>): i is [LinkTypeId] {
+  export function isLink(
+    i: DeepReadonly<NodeInputSchema>,
+  ): i is readonly [LinkTypeId] {
     return !(isBool(i) || isInt(i) || isFloat(i) || isString(i) || isList(i));
   }
 }

@@ -421,7 +421,14 @@ export namespace WorkflowStep {
     };
   }
 
-  export function isShift(item: DeepReadonly<WorkflowStep>): item is ShiftStep {
+  export function isShift(item: WorkflowStep): item is ShiftStep;
+  export function isShift(
+    item: DeepReadonly<WorkflowStep>,
+  ): item is DeepReadonly<ShiftStep>;
+
+  export function isShift(
+    item: DeepReadonly<WorkflowStep>,
+  ): item is DeepReadonly<ShiftStep> {
     return item.type === WorkflowStepType.Shift;
   }
 
@@ -438,16 +445,21 @@ export namespace WorkflowStep {
     });
   }
 
+  export function isPrimitive(item: WorkflowStep): item is PrimitiveStep;
   export function isPrimitive(
     item: DeepReadonly<WorkflowStep>,
-  ): item is PrimitiveStep {
+  ): item is DeepReadonly<PrimitiveStep>;
+
+  export function isPrimitive(
+    item: DeepReadonly<WorkflowStep>,
+  ): item is DeepReadonly<PrimitiveStep> {
     return item.type === WorkflowStepType.Primitive;
   }
 
   export function newNode(
     nodeType: NodeTypeId,
     form: Record<string, any>,
-    outputTypes?: LinkTypeId[],
+    outputTypes?: readonly LinkTypeId[],
   ): DeepReadonly<NodeStep> {
     return Object.freeze({
       type: WorkflowStepType.Node,
@@ -480,7 +492,14 @@ export namespace WorkflowStep {
     return newNode(type.name, form);
   }
 
-  export function isNode(item: DeepReadonly<WorkflowStep>): item is NodeStep {
+  export function isNode(item: WorkflowStep): item is NodeStep;
+  export function isNode(
+    item: DeepReadonly<WorkflowStep>,
+  ): item is DeepReadonly<NodeStep>;
+
+  export function isNode(
+    item: DeepReadonly<WorkflowStep>,
+  ): item is DeepReadonly<NodeStep> {
     return item.type === WorkflowStepType.Node;
   }
 
@@ -499,9 +518,14 @@ export namespace WorkflowStep {
     });
   }
 
+  export function isAggregate(item: WorkflowStep): item is AggregateNodeStep;
   export function isAggregate(
     item: DeepReadonly<WorkflowStep>,
-  ): item is AggregateNodeStep {
+  ): item is DeepReadonly<AggregateNodeStep>;
+
+  export function isAggregate(
+    item: DeepReadonly<WorkflowStep>,
+  ): item is DeepReadonly<AggregateNodeStep> {
     return item.type === WorkflowStepType.Aggregate;
   }
 }

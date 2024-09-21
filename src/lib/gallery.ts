@@ -53,9 +53,14 @@ export namespace GalleryItem {
     };
   }
 
+  export function isQueued(item: GalleryItem): item is QueuedItem;
   export function isQueued(
     item: DeepReadonly<GalleryItem>,
-  ): item is QueuedItem {
+  ): item is DeepReadonly<QueuedItem>;
+
+  export function isQueued(
+    item: DeepReadonly<GalleryItem>,
+  ): item is DeepReadonly<QueuedItem> {
     return item.type === GalleryItemType.Queued;
   }
 
@@ -72,9 +77,14 @@ export namespace GalleryItem {
     };
   }
 
-  export function isCompleted(
+  export function isExecuted(item: GalleryItem): item is ExecutedItem;
+  export function isExecuted(
     item: DeepReadonly<GalleryItem>,
-  ): item is ExecutedItem {
+  ): item is DeepReadonly<ExecutedItem>;
+
+  export function isExecuted(
+    item: DeepReadonly<GalleryItem>,
+  ): item is DeepReadonly<ExecutedItem> {
     return item.type === GalleryItemType.Executed;
   }
 
@@ -95,9 +105,14 @@ export namespace GalleryItem {
     };
   }
 
+  export function isFailed(item: GalleryItem): item is FailedItem;
   export function isFailed(
     item: DeepReadonly<GalleryItem>,
-  ): item is FailedItem {
+  ): item is DeepReadonly<FailedItem>;
+
+  export function isFailed(
+    item: DeepReadonly<GalleryItem>,
+  ): item is DeepReadonly<FailedItem> {
     return item.type === GalleryItemType.Failed;
   }
 }

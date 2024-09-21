@@ -69,7 +69,7 @@
         let itemIdx = items.findIndex((item) => item.id === itemId);
         if (itemIdx === -1) return;
         const item = items[itemIdx];
-        if (!GalleryItem.isCompleted(item) || item.images === undefined) return;
+        if (!GalleryItem.isExecuted(item) || item.images === undefined) return;
 
         if (dir === "prev") {
             if (itemIdx === 0 && imageIdx === 0) return;
@@ -78,7 +78,7 @@
                 let prevItem = items[--itemIdx];
                 for (
                     ;
-                    !GalleryItem.isCompleted(prevItem) ||
+                    !GalleryItem.isExecuted(prevItem) ||
                     prevItem.images === undefined;
                     prevItem = items[--itemIdx]
                 ) {
@@ -100,7 +100,7 @@
                 let nextItem = items[++itemIdx];
                 for (
                     ;
-                    !GalleryItem.isCompleted(nextItem) ||
+                    !GalleryItem.isExecuted(nextItem) ||
                     nextItem.images === undefined;
                     nextItem = items[++itemIdx]
                 ) {

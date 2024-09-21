@@ -7,7 +7,6 @@
 
     import { GalleryItem, type RetrieveImageUrl } from "../lib/gallery";
     import type { WorkflowItem } from "../lib/workflow";
-    import type { ImageOutput } from "../lib/comfy";
 
     export let item: GalleryItem;
     export let getImageUrl: RetrieveImageUrl;
@@ -69,7 +68,7 @@
                 labelInside={item.nodeId !== undefined}
             />
         </div>
-    {:else if GalleryItem.isCompleted(item)}
+    {:else if GalleryItem.isExecuted(item)}
         <div
             class={`grid grid-cols-${Math.ceil(Math.sqrt(item.images?.length ?? 0))}`}
         >
