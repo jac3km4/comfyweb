@@ -1,5 +1,6 @@
 <script lang="ts">
     import * as R from "remeda";
+    import type { DeepReadonly } from "ts-essentials";
 
     import {
         getImageUrl,
@@ -27,11 +28,11 @@
         openImageId = [id, index];
     }
 
-    function handleLoad(item: GalleryItem) {
-        workflow.set(R.clone(item.workflow));
+    function handleLoad(item: DeepReadonly<GalleryItem>) {
+        workflow.set(item.workflow.map((it) => R.clone(it)));
     }
 
-    async function handleDelete(item: GalleryItem) {
+    async function handleDelete(item: DeepReadonly<GalleryItem>) {
         if (GalleryItem.isQueued(item)) {
             if (item.nodeId !== undefined) {
                 const resp = await fetch(getInterruptRequestUrl($serverHost), {

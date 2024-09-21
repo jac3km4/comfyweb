@@ -1,5 +1,6 @@
 <script lang="ts">
     import { createEventDispatcher } from "svelte";
+    import type { DeepReadonly } from "ts-essentials";
 
     import { Tooltip } from "flowbite-svelte";
     import { QuestionCircleSolid, TrashBinSolid } from "flowbite-svelte-icons";
@@ -10,7 +11,7 @@
 
     export let header: string;
     export let fields: Record<string, any>;
-    export let schema: Record<string, NodeInputSchema>;
+    export let schema: DeepReadonly<Record<string, NodeInputSchema>>;
     export let tooltip: string | undefined = undefined;
     export let expanded = false;
 

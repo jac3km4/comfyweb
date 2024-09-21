@@ -1,5 +1,6 @@
 <script lang="ts">
     import * as R from "remeda";
+    import type { DeepReadonly } from "ts-essentials";
 
     import {
         createComfyWorkflow,
@@ -66,11 +67,11 @@
         }
     }
 
-    function handleSaveWorkflow(items: WorkflowItem[]) {
+    function handleSaveWorkflow(items: DeepReadonly<WorkflowItem[]>) {
         downloadJson(items.map((item) => item.step));
     }
 
-    function handleSaveAsComfyUIWorkflow(items: WorkflowItem[]) {
+    function handleSaveAsComfyUIWorkflow(items: DeepReadonly<WorkflowItem[]>) {
         const steps = items.map((item) => item.step);
         const graph = generateGraphMetadata(steps, $library);
         downloadJson(createComfyWorkflow(graph));
@@ -104,7 +105,7 @@
         }
     }
 
-    function formatPromptError(error: PromptError): string {
+    function formatPromptError(error: DeepReadonly<PromptError>): string {
         let message = `${error.error.message}. `;
         for (const [, e] of Object.entries(error.node_errors ?? {})) {
             message += `${e.class_type}: ${e.errors.map((e) => e.message).join(", ")}. `;

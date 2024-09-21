@@ -1,5 +1,11 @@
+import type { DeepReadonly } from "ts-essentials";
 import type { ImageOutput, NodeTypeId, PromptId } from "./comfy";
 import type { WorkflowItem } from "./workflow";
+
+export type RetrieveImageUrl = (
+  image: Readonly<ImageOutput>,
+  key?: string,
+) => string;
 
 export interface GalleryItem {
   id: PromptId;
@@ -47,7 +53,9 @@ export namespace GalleryItem {
     };
   }
 
-  export function isQueued(item: GalleryItem): item is QueuedItem {
+  export function isQueued(
+    item: DeepReadonly<GalleryItem>,
+  ): item is QueuedItem {
     return item.type === GalleryItemType.Queued;
   }
 
@@ -64,7 +72,9 @@ export namespace GalleryItem {
     };
   }
 
-  export function isCompleted(item: GalleryItem): item is ExecutedItem {
+  export function isCompleted(
+    item: DeepReadonly<GalleryItem>,
+  ): item is ExecutedItem {
     return item.type === GalleryItemType.Executed;
   }
 
@@ -85,7 +95,9 @@ export namespace GalleryItem {
     };
   }
 
-  export function isFailed(item: GalleryItem): item is FailedItem {
+  export function isFailed(
+    item: DeepReadonly<GalleryItem>,
+  ): item is FailedItem {
     return item.type === GalleryItemType.Failed;
   }
 }

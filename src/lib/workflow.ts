@@ -1,5 +1,6 @@
 import ExifReader from "exifreader";
 import * as R from "remeda";
+import type { DeepReadonly } from "ts-essentials";
 
 import {
   type LinkTypeId,
@@ -21,7 +22,7 @@ import { topologicallySortedNodes } from "./graph";
 
 export function loadFromDataTransfer(
   dt: DataTransfer,
-  library: NodeLibrary,
+  library: DeepReadonly<NodeLibrary>,
 ): Promise<WorkflowStep[] | undefined> {
   return new Promise((resolve, reject) => {
     const file: File | undefined = dt.files[0];
@@ -79,7 +80,7 @@ export function loadFromDataTransfer(
 
 export function loadFromComfyWorkflow(
   graph: ComfyWorkflow,
-  library: NodeLibrary,
+  library: DeepReadonly<NodeLibrary>,
 ): WorkflowStep[] {
   patchConditioningNodes(graph.nodes);
 
@@ -149,14 +150,12 @@ export function loadFromComfyWorkflow(
 
     const linkedInputs = new Set(node.inputs?.map(({ name }) => name) ?? []);
     const inputs = R.concat(
-      nodeType.input_order.required?.map<[string, NodeInputSchema]>((name) => [
-        name,
-        nodeType.input.required![name],
-      ]) ?? [],
-      nodeType.input_order.optional?.map<[string, NodeInputSchema]>((name) => [
-        name,
-        nodeType.input.optional![name],
-      ]) ?? [],
+      nodeType.input_order.required?.map<
+        [string, DeepReadonly<NodeInputSchema>]
+      >((name) => [name, nodeType.input.required![name]]) ?? [],
+      nodeType.input_order.optional?.map<
+        [string, DeepReadonly<NodeInputSchema>]
+      >((name) => [name, nodeType.input.optional![name]]) ?? [],
     ).filter(
       ([name, type]) =>
         !linkedInputs.has(name) && !NodeInputSchema.isLink(type),
@@ -212,8 +211,8 @@ function propagateTypes(nodes: Map<NodeId, Node>, links: Map<LinkId, Link>) {
 }
 
 export function generateGraphMetadata(
-  steps: WorkflowStep[],
-  library: NodeLibrary,
+  steps: DeepReadonly<WorkflowStep[]>,
+  library: DeepReadonly<NodeLibrary>,
 ): GraphMetadata {
   const expanded = expandAggregates(steps);
   const edges = generateEdges(expanded, library);
@@ -224,7 +223,9 @@ export function generateGraphMetadata(
   };
 }
 
-function expandAggregates(pipeline: WorkflowStep[]): WorkflowStep[] {
+function expandAggregates(
+  pipeline: DeepReadonly<WorkflowStep[]>,
+): WorkflowStep[] {
   const output: WorkflowStep[] = [];
 
   for (const step of pipeline) {
@@ -243,7 +244,10 @@ function expandAggregates(pipeline: WorkflowStep[]): WorkflowStep[] {
   return output;
 }
 
-function generateEdges(steps: WorkflowStep[], library: NodeLibrary): Edge[] {
+function generateEdges(
+  steps: DeepReadonly<WorkflowStep[]>,
+  library: DeepReadonly<NodeLibrary>,
+): Edge[] {
   const outputs = new Map<LinkTypeId, [NodeId, SlotId][]>();
   const edges: Edge[] = [];
 
@@ -315,8 +319,8 @@ function generateEdges(steps: WorkflowStep[], library: NodeLibrary): Edge[] {
 }
 
 export function generateNodes(
-  steps: WorkflowStep[],
-  edges: Edge[],
+  steps: DeepReadonly<WorkflowStep[]>,
+  edges: DeepReadonly<Edge[]>,
 ): [Node, WorkflowStep][] {
   const nodes: [Node, WorkflowStep][] = [];
   let currentNodeId = 0;
@@ -417,7 +421,7 @@ export namespace WorkflowStep {
     };
   }
 
-  export function isShift(item: WorkflowStep): item is ShiftStep {
+  export function isShift(item: DeepReadonly<WorkflowStep>): item is ShiftStep {
     return item.type === WorkflowStepType.Shift;
   }
 
@@ -425,16 +429,18 @@ export namespace WorkflowStep {
     outputType: LinkTypeId,
     value: any,
     control: PrimitiveControl,
-  ): PrimitiveStep {
-    return {
+  ): DeepReadonly<PrimitiveStep> {
+    return Object.freeze({
       type: WorkflowStepType.Primitive,
       outputType,
       value,
       control,
-    };
+    });
   }
 
-  export function isPrimitive(item: WorkflowStep): item is PrimitiveStep {
+  export function isPrimitive(
+    item: DeepReadonly<WorkflowStep>,
+  ): item is PrimitiveStep {
     return item.type === WorkflowStepType.Primitive;
   }
 
@@ -442,16 +448,18 @@ export namespace WorkflowStep {
     nodeType: NodeTypeId,
     form: Record<string, any>,
     outputTypes?: LinkTypeId[],
-  ): NodeStep {
-    return {
+  ): DeepReadonly<NodeStep> {
+    return Object.freeze({
       type: WorkflowStepType.Node,
       nodeType,
       form,
       outputTypes,
-    };
+    });
   }
 
-  export function newNodeWithType(type: NodeType): NodeStep {
+  export function newNodeWithType(
+    type: DeepReadonly<NodeType>,
+  ): DeepReadonly<NodeStep> {
     const form: Record<string, any> = {};
     for (const [name, schema] of Object.entries(type.input.required ?? {})) {
       if (NodeInputSchema.isBool(schema)) {
@@ -472,7 +480,7 @@ export namespace WorkflowStep {
     return newNode(type.name, form);
   }
 
-  export function isNode(item: WorkflowStep): item is NodeStep {
+  export function isNode(item: DeepReadonly<WorkflowStep>): item is NodeStep {
     return item.type === WorkflowStepType.Node;
   }
 
@@ -481,17 +489,19 @@ export namespace WorkflowStep {
     description: string,
     form: Record<string, any>,
     nodes: EmbeddedNode[],
-  ): AggregateNodeStep {
-    return {
+  ): DeepReadonly<AggregateNodeStep> {
+    return Object.freeze({
       type: WorkflowStepType.Aggregate,
       name,
       description,
       form,
       nodes,
-    };
+    });
   }
 
-  export function isAggregate(item: WorkflowStep): item is AggregateNodeStep {
+  export function isAggregate(
+    item: DeepReadonly<WorkflowStep>,
+  ): item is AggregateNodeStep {
     return item.type === WorkflowStepType.Aggregate;
   }
 }

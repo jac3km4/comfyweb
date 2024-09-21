@@ -1,4 +1,5 @@
 import * as R from "remeda";
+import type { DeepReadonly } from "ts-essentials";
 
 import type { LinkTypeId, NodeLibrary, NodeType, NodeTypeId } from "./comfy";
 import { WorkflowStep, type AggregateNodeStep } from "./workflow";
@@ -9,44 +10,46 @@ export interface PickerTree<A> {
   leaves: Record<string, A>;
 }
 
-export interface PickerValue {
+export interface NodePickerValue {
   type: string;
 }
 
-export namespace PickerValue {
-  export interface Node extends PickerValue {
+export namespace NodePickerValue {
+  export interface Node extends NodePickerValue {
     type: "node";
     nodeType: NodeType;
   }
 
-  export interface Aggregate extends PickerValue {
+  export interface Aggregate extends NodePickerValue {
     type: "aggregate";
     step: AggregateNodeStep;
   }
 
-  export interface WorkflowTemplate extends PickerValue {
+  export interface WorkflowTemplate extends NodePickerValue {
     type: "workflowTemplate";
     steps: WorkflowStep[];
   }
 
-  export function isNode(value: PickerValue): value is Node {
+  export function isNode(value: DeepReadonly<NodePickerValue>): value is Node {
     return value.type === "node";
   }
 
-  export function isAggregate(value: PickerValue): value is Aggregate {
+  export function isAggregate(
+    value: DeepReadonly<NodePickerValue>,
+  ): value is Aggregate {
     return value.type === "aggregate";
   }
 
   export function isWorkflowTemplate(
-    value: PickerValue,
+    value: DeepReadonly<NodePickerValue>,
   ): value is WorkflowTemplate {
     return value.type === "workflowTemplate";
   }
 }
 
 export function createPickerTree(
-  library: NodeLibrary,
-): PickerTree<PickerValue> {
+  library: DeepReadonly<NodeLibrary>,
+): DeepReadonly<PickerTree<NodePickerValue>> {
   return {
     subtrees: {
       "Comfy Node": createNodeTree(library),
@@ -72,9 +75,11 @@ export function createPickerTree(
   };
 }
 
-function createNodeTree(library: NodeLibrary): PickerTree<PickerValue> {
+function createNodeTree(
+  library: DeepReadonly<NodeLibrary>,
+): DeepReadonly<PickerTree<NodePickerValue>> {
   const byCategory = R.groupBy(Object.values(library), (node) => node.category);
-  const tree: PickerTree<PickerValue> = {
+  const tree: PickerTree<NodePickerValue> = {
     subtrees: {},
     leaves: {},
   };
@@ -93,7 +98,7 @@ function createNodeTree(library: NodeLibrary): PickerTree<PickerValue> {
       current = current.subtrees[part];
     }
     for (const node of nodes) {
-      const value: PickerValue.Node = {
+      const value: DeepReadonly<NodePickerValue.Node> = {
         type: "node",
         nodeType: node,
       };
@@ -103,7 +108,7 @@ function createNodeTree(library: NodeLibrary): PickerTree<PickerValue> {
   return tree;
 }
 
-const aggregateNodes: AggregateNodeStep[] = [
+const aggregateNodes: DeepReadonly<AggregateNodeStep[]> = [
   WorkflowStep.newAggregate(
     "Prompt",
     "Provides both positive and negative conditioning in a single step.",

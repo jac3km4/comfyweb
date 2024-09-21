@@ -4,9 +4,10 @@
     import { Modal } from "flowbite-svelte";
 
     import type { ImageOutput } from "../lib/comfy";
+    import type { RetrieveImageUrl } from "../lib/gallery";
 
-    export let image: ImageOutput | undefined;
-    export let getImageUrl: (image: ImageOutput, key?: string) => string;
+    export let image: Readonly<ImageOutput> | undefined;
+    export let getImageUrl: RetrieveImageUrl;
 
     const dispatch = createEventDispatcher<{
         navigate: "next" | "prev";

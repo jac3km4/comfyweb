@@ -1,6 +1,8 @@
 import * as R from "remeda";
 
-export function topologicallySortedNodes<N>(edges: [N, N][]): N[] {
+export function topologicallySortedNodes<N>(
+  edges: ReadonlyArray<readonly [N, N]>,
+): N[] {
   interface Node<K> {
     outgoing: K[];
     inDegree: number;

@@ -1,18 +1,19 @@
 <script lang="ts">
     import { createEventDispatcher } from "svelte";
+    import { type DeepReadonly } from "ts-essentials";
 
     import type { ImageOutput, PromptId } from "../lib/comfy";
-    import { GalleryItem } from "../lib/gallery";
+    import { GalleryItem, type RetrieveImageUrl } from "../lib/gallery";
 
     import GalleryItemComponent from "./GalleryItemComponent.svelte";
 
     export let items: GalleryItem[] = [];
-    export let getImageUrl: (img: ImageOutput, key?: string) => string;
+    export let getImageUrl: RetrieveImageUrl;
 
     const dispatch = createEventDispatcher<{
         openImage: { id: PromptId; index: number };
-        deleteItem: GalleryItem;
-        loadItem: GalleryItem;
+        deleteItem: DeepReadonly<GalleryItem>;
+        loadItem: DeepReadonly<GalleryItem>;
     }>();
 </script>
 

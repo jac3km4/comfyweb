@@ -1,21 +1,22 @@
 <script lang="ts" generics="T">
     import { createEventDispatcher } from "svelte";
+    import type { DeepReadonly } from "ts-essentials";
 
     import { Dropdown, DropdownItem, Search } from "flowbite-svelte";
     import { ChevronRightOutline } from "flowbite-svelte-icons";
 
     import type { PickerTree } from "../lib/picker";
 
-    export let tree: PickerTree<T>;
+    export let tree: DeepReadonly<PickerTree<T>>;
     export let nested: boolean = false;
     export let searchResultLimit: number = 10;
 
     let search: string = "";
     let open: boolean = false;
 
-    const dispatch = createEventDispatcher<{ select: T }>();
+    const dispatch = createEventDispatcher<{ select: DeepReadonly<T> }>();
 
-    function onSelect(value: T) {
+    function onSelect(value: DeepReadonly<T>) {
         open = false;
         dispatch("select", value);
     }
@@ -24,11 +25,14 @@
         el.querySelector("input")?.focus();
     }
 
-    function filterTree(tree: PickerTree<T>, search: string): [string, T][] {
-        const results: [string, T][] = [];
+    function filterTree(
+        tree: DeepReadonly<PickerTree<T>>,
+        search: string,
+    ): [string, DeepReadonly<T>][] {
+        const results: [string, DeepReadonly<T>][] = [];
         const regex = new RegExp(search, "i");
 
-        function visit(node: PickerTree<T>) {
+        function visit(node: DeepReadonly<PickerTree<T>>) {
             for (const key in node.subtrees) {
                 visit(node.subtrees[key]);
             }

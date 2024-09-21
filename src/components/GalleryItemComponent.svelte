@@ -1,15 +1,16 @@
 <script lang="ts">
     import { createEventDispatcher } from "svelte";
+    import type { DeepReadonly } from "ts-essentials";
 
     import { Alert, Card, Progressbar } from "flowbite-svelte";
     import { FileImportSolid, TrashBinSolid } from "flowbite-svelte-icons";
 
-    import { GalleryItem } from "../lib/gallery";
+    import { GalleryItem, type RetrieveImageUrl } from "../lib/gallery";
     import type { WorkflowItem } from "../lib/workflow";
     import type { ImageOutput } from "../lib/comfy";
 
     export let item: GalleryItem;
-    export let getImageUrl: (img: ImageOutput, key?: string) => string;
+    export let getImageUrl: RetrieveImageUrl;
 
     const dispatch = createEventDispatcher<{
         open: { index: number };
@@ -17,7 +18,9 @@
         load: void;
     }>();
 
-    function generateDescription(items: WorkflowItem[]): string | undefined {
+    function generateDescription(
+        items: DeepReadonly<WorkflowItem[]>,
+    ): string | undefined {
         const fields: string[] = ["prompt", "positive", "text"];
 
         for (const field of fields) {

@@ -1,4 +1,5 @@
 import * as R from "remeda";
+import type { DeepReadonly } from "ts-essentials";
 
 import {
   NodeInputSchema,
@@ -42,7 +43,9 @@ export function getWsUrl(host: string): string {
   return `ws://${host}/ws?clientId=${clientId}`;
 }
 
-export function createComfyWorkflow(graph: GraphMetadata): Workflow {
+export function createComfyWorkflow(
+  graph: DeepReadonly<GraphMetadata>,
+): DeepReadonly<Workflow> {
   return {
     nodes: graph.nodes.map(([node]) => node),
     links: graph.edges.map((edge) => [
@@ -56,8 +59,8 @@ export function createComfyWorkflow(graph: GraphMetadata): Workflow {
 }
 
 export function createPromptRequest(
-  graph: GraphMetadata,
-  steps?: WorkflowStep[],
+  graph: DeepReadonly<GraphMetadata>,
+  steps?: DeepReadonly<WorkflowStep[]>,
 ): PromptRequest {
   const workflow = createComfyWorkflow(graph);
 

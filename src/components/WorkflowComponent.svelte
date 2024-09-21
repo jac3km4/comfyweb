@@ -2,6 +2,7 @@
     import * as R from "remeda";
     import { flip } from "svelte/animate";
     import { dndzone } from "svelte-dnd-action";
+    import type { DeepReadonly } from "ts-essentials";
 
     import { NodeInputSchema, type NodeLibrary } from "../lib/comfy";
     import { WorkflowStep, type WorkflowItem } from "../lib/workflow";
@@ -9,7 +10,7 @@
     import WorkflowStepComponent from "./WorkflowStepComponent.svelte";
 
     export let items: WorkflowItem[];
-    export let library: NodeLibrary;
+    export let library: DeepReadonly<NodeLibrary>;
     const flipDurationMs = 200;
 
     function handleUpdate(updated: WorkflowItem[]) {
@@ -22,22 +23,23 @@
 
     function createStepProps(
         step: WorkflowStep,
-        library: NodeLibrary,
+        library: DeepReadonly<NodeLibrary>,
     ): {
         header: string;
         tooltip: string;
         fields: Record<string, any>;
-        schema: Record<string, NodeInputSchema>;
+        schema: DeepReadonly<Record<string, NodeInputSchema>>;
     } {
         if (WorkflowStep.isNode(step)) {
             const type = library[step.nodeType];
-            const schema = R.mapValues<Record<string, any>, NodeInputSchema>(
-                step.form,
-                (_, key) =>
-                    key === "control_after_generate"
-                        ? [["fixed", "increment", "decrement", "randomize"]]
-                        : (type.input.required?.[key] ??
-                              type.input.optional?.[key])!,
+            const schema = R.mapValues<
+                Record<string, any>,
+                DeepReadonly<NodeInputSchema>
+            >(step.form, (_, key) =>
+                key === "control_after_generate"
+                    ? [["fixed", "increment", "decrement", "randomize"]]
+                    : (type.input.required?.[key] ??
+                          type.input.optional?.[key])!,
             );
             return {
                 header: step.nodeType,
@@ -60,7 +62,7 @@
                 schema: { count: ["INT", {}] },
             };
         } else if (WorkflowStep.isAggregate(step)) {
-            const schema: Record<string, NodeInputSchema> = {};
+            const schema: Record<string, DeepReadonly<NodeInputSchema>> = {};
             for (const node of step.nodes) {
                 for (const from in node.formMapping) {
                     const to = node.formMapping[from];
@@ -72,7 +74,7 @@
                 header: step.name,
                 tooltip: step.description,
                 fields: step.form,
-                schema,
+                schema: Object.freeze(schema),
             };
         } else {
             throw "unreachable";

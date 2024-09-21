@@ -1,3 +1,5 @@
+import type { DeepReadonly } from "ts-essentials";
+
 export type NodeId = number & { [NodeIdSym]: never };
 declare const NodeIdSym: unique symbol;
 
@@ -39,7 +41,7 @@ export namespace Node {
     widgets_values: [any, PrimitiveControl];
   }
 
-  export function isPrimitive(node: Node): node is Primitive {
+  export function isPrimitive(node: DeepReadonly<Node>): node is Primitive {
     return node.type === "PrimitiveNode";
   }
 }
@@ -108,27 +110,35 @@ export namespace NodeInputSchema {
     default?: boolean;
   }
 
-  export function isBool(i: NodeInputSchema): i is Primitive<"BOOL"> {
+  export function isBool(
+    i: DeepReadonly<NodeInputSchema>,
+  ): i is Primitive<"BOOL"> {
     return i[0] === "BOOL";
   }
 
-  export function isInt(i: NodeInputSchema): i is Primitive<"INT"> {
+  export function isInt(
+    i: DeepReadonly<NodeInputSchema>,
+  ): i is Primitive<"INT"> {
     return i[0] === "INT";
   }
 
-  export function isFloat(i: NodeInputSchema): i is Primitive<"FLOAT"> {
+  export function isFloat(
+    i: DeepReadonly<NodeInputSchema>,
+  ): i is Primitive<"FLOAT"> {
     return i[0] === "FLOAT";
   }
 
-  export function isString(i: NodeInputSchema): i is Primitive<"STRING"> {
+  export function isString(
+    i: DeepReadonly<NodeInputSchema>,
+  ): i is Primitive<"STRING"> {
     return i[0] === "STRING";
   }
 
-  export function isList(i: NodeInputSchema): i is [string[]] {
+  export function isList(i: DeepReadonly<NodeInputSchema>): i is [string[]] {
     return Array.isArray(i[0]);
   }
 
-  export function isLink(i: NodeInputSchema): i is [LinkTypeId] {
+  export function isLink(i: DeepReadonly<NodeInputSchema>): i is [LinkTypeId] {
     return !(isBool(i) || isInt(i) || isFloat(i) || isString(i) || isList(i));
   }
 }

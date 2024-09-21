@@ -7,11 +7,12 @@
         Label,
         Textarea,
     } from "flowbite-svelte";
+    import type { DeepReadonly } from "ts-essentials";
 
     import { NodeInputSchema } from "../lib/comfy";
 
     export let fields: Record<string, any>;
-    export let schema: Record<string, NodeInputSchema>;
+    export let schema: DeepReadonly<Record<string, NodeInputSchema>>;
 </script>
 
 <div class="grid grid-flow-row grid-cols-[1fr_4fr] gap-2">

@@ -1,30 +1,31 @@
 <script lang="ts">
     import * as R from "remeda";
     import { createEventDispatcher } from "svelte";
+    import type { DeepReadonly } from "ts-essentials";
 
     import { Button, Input, Label, TabItem, Tabs } from "flowbite-svelte";
     import { ChevronDownOutline } from "flowbite-svelte-icons";
 
     import { type NodeLibrary } from "../lib/comfy";
-    import { createPickerTree, PickerValue } from "../lib/picker";
+    import { createPickerTree, NodePickerValue } from "../lib/picker";
     import { WorkflowItem, WorkflowStep } from "../lib/workflow";
 
     import TreeDropdownComponent from "./TreeDropdownComponent.svelte";
     import WorkflowComponent from "./WorkflowComponent.svelte";
 
     export let workflow: WorkflowItem[];
-    export let library: NodeLibrary;
+    export let library: DeepReadonly<NodeLibrary>;
     export let serverHost: string;
 
     const dispatch = createEventDispatcher<{
         enqueue: WorkflowItem[];
-        saveWorkflow: WorkflowItem[];
-        saveAsComfyUIWorkflow: WorkflowItem[];
+        saveWorkflow: DeepReadonly<WorkflowItem[]>;
+        saveAsComfyUIWorkflow: DeepReadonly<WorkflowItem[]>;
         showError: string;
     }>();
 
-    function onDropdownSelect(value: PickerValue) {
-        if (PickerValue.isNode(value)) {
+    function onDropdownSelect(value: DeepReadonly<NodePickerValue>) {
+        if (NodePickerValue.isNode(value)) {
             workflow = [
                 ...workflow,
                 WorkflowItem.fromStep(
@@ -32,7 +33,7 @@
                     true,
                 ),
             ];
-        } else if (PickerValue.isAggregate(value)) {
+        } else if (NodePickerValue.isAggregate(value)) {
             const result = validateStep(value.step);
             if (result !== undefined) {
                 dispatch("showError", result);
@@ -43,7 +44,7 @@
                 ...workflow,
                 WorkflowItem.fromStep(R.clone(value.step), true),
             ];
-        } else if (PickerValue.isWorkflowTemplate(value)) {
+        } else if (NodePickerValue.isWorkflowTemplate(value)) {
             const result = R.reduce<WorkflowStep, string | undefined>(
                 value.steps,
                 (acc, step) => acc ?? validateStep(step),
@@ -60,7 +61,9 @@
         }
     }
 
-    function validateStep(step: WorkflowStep): string | undefined {
+    function validateStep(
+        step: DeepReadonly<WorkflowStep>,
+    ): string | undefined {
         if (WorkflowStep.isNode(step)) {
             if (library[step.nodeType] === undefined)
                 return `Node type ${step.nodeType} not found`;
