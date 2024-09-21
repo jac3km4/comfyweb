@@ -36,8 +36,8 @@
                 (_, key) =>
                     key === "control_after_generate"
                         ? [["fixed", "increment", "decrement", "randomize"]]
-                        : (type.input.required[key] ??
-                          type.input.optional?.[key]),
+                        : (type.input.required?.[key] ??
+                              type.input.optional?.[key])!,
             );
             return {
                 header: step.nodeType,
@@ -64,7 +64,8 @@
             for (const node of step.nodes) {
                 for (const from in node.formMapping) {
                     const to = node.formMapping[from];
-                    schema[to] = library[node.type].input.required[from];
+                    const type = library[node.type].input.required?.[from];
+                    if (type !== undefined) schema[to] = type;
                 }
             }
             return {
