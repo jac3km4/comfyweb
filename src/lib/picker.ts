@@ -73,16 +73,13 @@ export function createPickerTree(
 }
 
 function createNodeTree(library: NodeLibrary): PickerTree<PickerValue> {
-  const byCategory = Map.groupBy(
-    Object.values(library),
-    (node) => node.category,
-  );
+  const byCategory = R.groupBy(Object.values(library), (node) => node.category);
   const tree: PickerTree<PickerValue> = {
     subtrees: {},
     leaves: {},
   };
 
-  for (const [category, nodes] of byCategory) {
+  for (const [category, nodes] of Object.entries(byCategory)) {
     const parts = category.split("/");
     let current = tree;
 
