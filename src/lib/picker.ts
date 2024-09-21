@@ -130,7 +130,7 @@ const aggregateNodes: DeepReadonly<AggregateNodeStep[]> = [
     ],
   ),
   WorkflowStep.newAggregate(
-    "Preview",
+    "Decode&Preview Image",
     "Performs VAEDecode and PreviewImage in a single step.",
     {},
     [
