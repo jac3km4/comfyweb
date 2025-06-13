@@ -185,7 +185,16 @@ export function loadFromComfyWorkflow(
 }
 
 function patchConditioningNodes(nodes: Node[]) {
+  // Add null/undefined check for nodes array
+  if (!nodes || !Array.isArray(nodes)) {
+    console.warn('patchConditioningNodes: nodes is not a valid array:', nodes);
+    return;
+  }
+
   for (const node of nodes) {
+    // Add null check for individual node
+    if (!node) continue;
+    
     const conditioning = node.inputs?.filter(
       (input) => input.type === "CONDITIONING",
     );
